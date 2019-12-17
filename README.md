@@ -1,5 +1,5 @@
 # VUE_Restaurants
-Run the server and the client in two different shell
+The project need to be run in two differents shell, one for the client and one for the server.
 
 # Client
 ```
@@ -42,6 +42,5 @@ cd Server
 
 ## Run the server
 ```
-cd Server
 npm run dev-server
 ```
