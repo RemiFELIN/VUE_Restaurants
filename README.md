@@ -1,5 +1,10 @@
 # VUE_Restaurants
-Un gestionnaire de carte / menus d'un restaurant
+Run the server and the client in two different shell
+
+# Client
+```
+cd Client
+```
 
 ## Project setup
 ```
@@ -28,3 +33,15 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+# Server
+```
+cd Server
+```
+
+## Run the server
+```
+cd Server
+npm run dev-server
+```
