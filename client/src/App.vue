@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
@@ -7,6 +8,11 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import Vue from 'vue'
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.min.css'
+
+Vue.use(VueMaterial)
 
 export default {
   name: 'app',
