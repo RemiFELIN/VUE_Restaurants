@@ -1,23 +1,27 @@
 
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Bienvenue ! ceci est notre VUE_Restaurants"/>
+    <md-toolbar class="md-primary">
+      <h3 class="md-title"><md-icon>room_service</md-icon>  Gestionnaire de menus pour restaurants </h3>
+    </md-toolbar>
+    <LeftPanel/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import LeftPanel from './components/LeftPanel.vue'
+
 import Vue from 'vue'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default.css'
 
 Vue.use(VueMaterial)
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    LeftPanel
   }
 }
 </script>
@@ -29,6 +33,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
