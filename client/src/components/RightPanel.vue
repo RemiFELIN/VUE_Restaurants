@@ -10,7 +10,7 @@
         <md-table-head>Code Postal</md-table-head>
       </md-table-row>
 
-      <md-table-row v-for="item in restaurants" :key="item.id">
+      <md-table-row v-for="item in restaurants" :key="item.id" v-on:click="sendRestaurantData(item)">
         <!-- <md-table-cell md-numeric>{{item.restaurant_id}}</md-table-cell> -->
         <md-table-cell>{{item.name}}</md-table-cell>
         <md-table-cell>{{item.cuisine}}</md-table-cell>
@@ -59,6 +59,7 @@ export default {
   },
   methods: {
     async getDataFromServer() {
+
       let url =
         this.apiBaseURL +
         "?page=" +
@@ -76,6 +77,7 @@ export default {
       } catch (err) {
         console.log("Erreur dans les fetchs GET " + err.msg);
       }
+
     },
     async ajouterRestaurant(restaurant) {
 
@@ -92,6 +94,9 @@ export default {
       console.log(reponseJS.msg);
 
     },
+  sendRestaurantData(restaurant) {
+    this.$emit("restaurantData", restaurant);
+  }
 
   }
 };
