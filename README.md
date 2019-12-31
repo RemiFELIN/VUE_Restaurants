@@ -41,7 +41,15 @@ cd Server
 ```
 
 ## Project setup
+Install mongoDB, you can refer to this link: [official website](https://docs.mongodb.org/manual/installation/).
+Then download this file: [primer-dataset.json](https://raw.githubusercontent.com/mongodb/docs-assets/primer-dataset/primer-dataset.json).
+Now create a data base with the json file:
 ```
+mongoimport --db test --collection restaurants --drop --file primer-dataset.json
+```
+Go to the server path and install all npm depedency:
+```
+cd server
 npm install
 ```
 

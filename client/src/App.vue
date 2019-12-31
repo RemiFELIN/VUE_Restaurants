@@ -3,7 +3,7 @@
   <div id="app">
     <md-toolbar class="md-primary">
       <h3 class="md-title">
-        <md-icon>room_service</md-icon>Gestionnaire de menus pour restaurants
+        <md-icon>room_service</md-icon>&nbsp;Gestionnaire de menus pour restaurants
       </h3>
     </md-toolbar>
     <LeftPanel @inputData="updateMessage"/>
@@ -48,4 +48,5 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
 </style>
