@@ -1,8 +1,8 @@
 
-<template>
+<template >
   <div id="leftPanel">
-    <addCuisine v-if="currentRestaurant == null" :msg="currentRestaurant" @inputData="updateMessage"></addCuisine>
-    <displayRestaurant v-if="currentRestaurant != null" :msg="currentRestaurant"></displayRestaurant>
+    <addCuisine @inputData="updateMessage" :displayAddCuisine="display"></addCuisine>
+    <displayRestaurant @display="updateDisplay" :msg="currentRestaurant"></displayRestaurant>
   </div>
 </template>
 
@@ -23,8 +23,11 @@ export default {
   },
   watch: {
     msg: function() {
-      if(typeof(this.msg) == "object")
+      console.log("left panel msg:", this.msg);
+      if (typeof this.msg == "object") {
         this.currentRestaurant = this.msg;
+        this.display = false;
+      }
     }
   },
   data() {
@@ -33,41 +36,18 @@ export default {
       cuisine: "",
       zipCode: "",
       street: "",
-      currentRestaurant: null
+      currentRestaurant: null,
+      mode: 0,
+      display:true
     };
   },
   methods: {
-    submit: function() {
-      var virgule = /;/i;
-      if (
-        this.nom.match(virgule) ||
-        this.cuisine.match(virgule) ||
-        this.street.match(virgule) ||
-        this.zipCode.match(virgule)
-      )
-        alert("Le caractère ';' est interdit !");
-      else if (
-        this.nom != "" &&
-        this.cuisine != "" &&
-        this.street != "" &&
-        this.zipCode != ""
-      ) {
-        this.$emit(
-          "inputData",
-          this.nom + ";" + this.cuisine + ";" + this.street + ";" + this.zipCode
-        );
-        this.cuisine = "";
-        this.nom = "";
-        this.street = "";
-        this.zipCode = "";
-      }
-    },
     updateMessage(variable) {
       this.$emit("inputData", variable);
     },
-    updateCurrentRestaurant(variable) {
-      this.currentRestaurant = variable;
-    }
+    updateDisplay(){
+      this.display = true;
+    },
     //   async supprimerRestaurant(id) {
     //     try {
     //       let reponseJSON = await fetch(this.apiBaseURL + "/" + id, {

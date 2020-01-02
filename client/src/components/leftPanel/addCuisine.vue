@@ -1,6 +1,6 @@
 
 <template>
-  <div id="addCuisine">
+  <div id="addCuisine" v-if="display">
     <md-list class="md-double-line">
       <md-subheader>Restaurant</md-subheader>
 
@@ -46,12 +46,24 @@
 <script>
 export default {
   name: "addCuisine",
+  props:{
+    displayAddCuisine:{
+      type:Boolean
+    }
+  },
+  watch:{
+    displayAddCuisine:function(){
+      console.log('displayAddCuisnie' ,this.displayAddCuisine)
+      this.display = this.displayAddCuisine;
+    }
+  },
   data() {
     return {
       nom: "",
       cuisine: "",
       zipCode: "",
       street: "",
+      display:true
     };
   },
   methods: {

@@ -1,14 +1,130 @@
 
-<template >
-  <div id="displayRestaurant">
-    <md-table v-if="resturant" :key="componentKey">
-      <md-table-row md-numeric>ID:{{resturant.restaurant_id}}</md-table-row>
-      <md-table-row>Nom:{{resturant.name}}</md-table-row>
-      <md-table-row>Cuisine:{{resturant.cuisine}}</md-table-row>
-      <md-table-row>Arrondissement:{{resturant.borough}}</md-table-row>
-      <md-table-row>Rue:{{resturant.address.street}}</md-table-row>
-      <md-table-row>Code Postal:{{resturant.address.zipcode}}</md-table-row>
-    </md-table>
+<template>
+  <div id="displayRestaurant" v-if="display">
+    <md-button  @click="retour">
+
+    <md-subheader>
+      <md-icon  class="retour-icon">keyboard_backspace</md-icon>
+      Retour
+    </md-subheader>
+    </md-button>
+
+    <md-list class="md-double-line">
+      <!--Nom du restaurant-->
+      <md-list-item >
+        <md-icon class="md-primary">assignment</md-icon>
+
+        <div v-if="!displayInputName" class="md-list-item-text">
+          <span>Nom</span>
+          <span>{{restaurant.name}}</span>
+        </div>
+
+        <md-field v-if="displayInputName">
+          <label>Nom</label>
+          <md-input v-model="restaurant.name"></md-input>
+        </md-field>
+
+        <md-button
+          class="md-icon-button md-list-action"
+          v-on:click="displayInputName = !displayInputName"
+        >
+          <md-icon v-if="!displayInputName">edit</md-icon>
+          <md-icon v-if="displayInputName">check_circle</md-icon>
+        </md-button>
+      </md-list-item>
+
+      <!--Nom de la cuisine-->
+      <md-list-item>
+        <md-icon class="md-primary">kitchen</md-icon>
+
+        <div v-if="!displayInputCuisine" class="md-list-item-text">
+          <span>Cuisine</span>
+          <span>{{restaurant.cuisine}}</span>
+        </div>
+
+        <md-field v-if="displayInputCuisine">
+          <label>Cuisine</label>
+          <md-input v-model="restaurant.cuisine"></md-input>
+        </md-field>
+
+        <md-button
+          class="md-icon-button md-list-action"
+          v-on:click="displayInputCuisine = !displayInputCuisine"
+        >
+          <md-icon v-if="!displayInputCuisine">edit</md-icon>
+          <md-icon v-if="displayInputCuisine">check_circle</md-icon>
+        </md-button>
+      </md-list-item>
+
+      <!--Nom de l'arrondissement-->
+      <md-list-item>
+        <md-icon class="md-primary">location_city</md-icon>
+
+        <div v-if="!displayInputBorough" class="md-list-item-text">
+          <span>Arrondissement</span>
+          <span>{{restaurant.borough}}</span>
+        </div>
+
+        <md-field v-if="displayInputBorough">
+          <label>Arrondissement</label>
+          <md-input v-model="restaurant.borough"></md-input>
+        </md-field>
+
+        <md-button
+          class="md-icon-button md-list-action"
+          v-on:click="displayInputBorough = !displayInputBorough"
+        >
+          <md-icon v-if="!displayInputBorough">edit</md-icon>
+          <md-icon v-if="displayInputBorough">check_circle</md-icon>
+        </md-button>
+      </md-list-item>
+
+      <!--Code postal du restaurant-->
+      <md-list-item>
+        <md-icon class="md-primary">gps_not_fixed</md-icon>
+
+        <div v-if="!displayInputZipCode" class="md-list-item-text">
+          <span>Code postal</span>
+          <span>{{restaurant.address.zipcode}}</span>
+        </div>
+
+        <md-field v-if="displayInputZipCode">
+          <label>Code postal</label>
+          <md-input v-model="restaurant.address.zipcode"></md-input>
+        </md-field>
+
+        <md-button
+          class="md-icon-button md-list-action"
+          v-on:click="displayInputZipCode = !displayInputZipCode"
+        >
+          <md-icon v-if="!displayInputZipCode">edit</md-icon>
+          <md-icon v-if="displayInputZipCode">check_circle</md-icon>
+        </md-button>
+      </md-list-item>
+
+      <!--Rue du restaurant-->
+      <md-list-item>
+        <md-icon class="md-primary">streetview</md-icon>
+
+        <div v-if="!displayInputStreet" class="md-list-item-text">
+          <span>Rue</span>
+          <span>{{restaurant.address.street}}</span>
+        </div>
+
+        <md-field v-if="displayInputStreet">
+          <label>Rue</label>
+          <md-input v-model="restaurant.address.street"></md-input>
+        </md-field>
+
+        <md-button
+          class="md-icon-button md-list-action"
+          v-on:click="displayInputStreet = !displayInputStreet"
+        >
+          <md-icon v-if="!displayInputStreet">edit</md-icon>
+          <md-icon v-if="displayInputStreet">check_circle</md-icon>
+        </md-button>
+      </md-list-item>
+    </md-list>
   </div>
 </template>
 
@@ -20,21 +136,51 @@ export default {
       type: null
     }
   },
-  data() {
-    return {
-      resturant: null,
-      componentKey:0
-    };
-  },
   watch: {
     msg: function() {
-      console.log(this.msg);
-      this.resturant = this.msg;
-      this.componentKey += 1;
+      console.log("display restaurant:", this.msg);
+      this.display = true;
+      this.restaurant = this.msg;
     }
+  },
+  data() {
+    return {
+      display: false,
+      displayInputStreet: false,
+      inputStreet: "",
+      displayInputZipCode: false,
+      inputZipCode: "",
+      displayInputName: false,
+      inputName: "",
+      displayInputCuisine: false,
+      inputCuisine: "",
+      displayInputBorough: false,
+      inputBorough: "",
+      restaurant: {
+        restaurant_id: null,
+        name: null,
+        cuisine: null,
+        borough: null,
+        address: {
+          street: null,
+          zipcode: null
+        }
+      }
+    };
+  },
+  methods: {
+    retour: function() {
+      this.display = false;
+      this.$emit("display",false);
+      console.log("retour clicked");
+    },
+
   }
 };
 </script>
 
 <style >
+.retour-icon {
+  margin: 0% 0% 0% 0% !important;
+}
 </style>
