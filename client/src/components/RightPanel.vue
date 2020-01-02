@@ -10,7 +10,12 @@
         <md-table-head>Code Postal</md-table-head>
       </md-table-row>
 
-      <md-table-row v-for="item in restaurants" :key="item.id" v-on:click="sendRestaurantData(item)">
+      <md-table-row
+        v-for="item in restaurants"
+        :key="item.id"
+        v-on:click="sendRestaurantData(item)"
+        style="cursor:pointer"
+      >
         <!-- <md-table-cell md-numeric>{{item.restaurant_id}}</md-table-cell> -->
         <md-table-cell>{{item.name}}</md-table-cell>
         <md-table-cell>{{item.cuisine}}</md-table-cell>
@@ -26,9 +31,7 @@
 export default {
   name: "RightPanel",
   props: {
-    msg: {
-      type: String
-    }
+    msg: {}
   },
   data() {
     return {
@@ -37,21 +40,15 @@ export default {
       apiBaseURL: "http://localhost:9000/api/restaurants",
       page: 0,
       pagesize: 20,
-      nomRecherche: ""
+      nomRecherche: "",
+      restaurant: null
     };
   },
   watch: {
     msg: function() {
-      var restaurant = {
-        name: this.msg.split(";")[0],
-        cuisine: this.msg.split(";")[1],
-        address: {
-          street: this.msg.split(";")[2],
-          zipcode: this.msg.split(";")[3]
-        }
-      };
-      this.restaurants.push(restaurant);
-      this.ajouterRestaurant(restaurant);
+      this.restaurant = this.msg;
+      if (this.restaurant.restaurant_id) this.modifierRestaurant(this.restaurant);
+      else this.ajouterRestaurant(this.restaurant);
     }
   },
   mounted() {
@@ -59,7 +56,6 @@ export default {
   },
   methods: {
     async getDataFromServer() {
-
       let url =
         this.apiBaseURL +
         "?page=" +
@@ -77,14 +73,14 @@ export default {
       } catch (err) {
         console.log("Erreur dans les fetchs GET " + err.msg);
       }
-
     },
     async ajouterRestaurant(restaurant) {
-
+      this.restaurants.push(restaurant);
       let donneesFormulaire = new FormData();
       donneesFormulaire.append("name", restaurant.name);
       donneesFormulaire.append("cuisine", restaurant.cuisine);
-      donneesFormulaire.append("address", restaurant.address);
+      donneesFormulaire.append("address.street", restaurant.address.street);
+      donneesFormulaire.append("address.zipcode", restaurant.address.zipcode);
 
       let reponseJSON = await fetch(this.apiBaseURL, {
         method: "POST",
@@ -92,12 +88,38 @@ export default {
       });
       let reponseJS = await reponseJSON.json();
       console.log(reponseJS.msg);
-
     },
-  sendRestaurantData(restaurant) {
-    this.$emit("restaurantData", restaurant);
-  }
-
+    sendRestaurantData(restaurant) {
+      this.$emit("restaurantData", restaurant);
+    },
+    async supprimerRestaurant(id) {
+      try {
+        let reponseJSON = await fetch(this.apiBaseURL + "/" + id, {
+          method: "DELETE"
+        });
+        let reponseJS = await reponseJSON.json();
+        console.log("Restaurant supprime : " + reponseJS.msg);
+        this.getDataFromServer(); // on rafraichit l'affichage
+      } catch (err) {
+        console.log("Erreur dans le fetchs DELETE " + err.msg);
+      }
+    },
+    async modifierRestaurant(restaurant) {
+      try {
+        let donneesFormulaire = new FormData();
+        donneesFormulaire.append("restaurant_id", restaurant.restaurant_id);
+        donneesFormulaire.append("cuisine", restaurant.cuisine);
+        let reponseJSON = await fetch(this.apiBaseURL + "/" + restaurant.restaurant_id, {
+          method: "PUT",
+          body: donneesFormulaire
+        });
+        let reponseJS = await reponseJSON.json();
+        console.log("Restaurant modifié : " + reponseJS.msg);
+        // this.getDataFromServer(); // on rafraichit l'affichage
+      } catch (err) {
+        console.log("Erreur dans le fetchs DELETE " + err.msg);
+      }
+    }
   }
 };
 </script>
@@ -111,7 +133,7 @@ export default {
   height: calc(100% - 64px);
   position: fixed;
   background: white;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .md-table-head {
   text-align: center !important;

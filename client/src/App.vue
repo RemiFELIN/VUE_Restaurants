@@ -6,8 +6,8 @@
         <md-icon>room_service</md-icon>&nbsp;Gestionnaire de menus pour restaurants
       </h3>
     </md-toolbar>
-    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage" />
-    <RightPanel :msg="childData" @restaurantData="updateCurrentRestaurant"/>
+    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage"  />
+    <RightPanel :msg="childData" @restaurantData="updateCurrentRestaurant" />
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
   data: function() {
     return {
       childData: "",
-      currentRestaurant: ""
+      currentRestaurant: "",
     };
   },
   methods: {
@@ -39,7 +39,7 @@ export default {
     },
     updateCurrentRestaurant(variable){
       this.currentRestaurant = variable;
-    }
+    },
   }
 };
 </script>

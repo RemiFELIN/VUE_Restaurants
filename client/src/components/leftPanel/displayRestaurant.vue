@@ -21,7 +21,7 @@
 
         <md-field v-if="displayInputName">
           <label>Nom</label>
-          <md-input v-model="restaurant.name"></md-input>
+          <md-input v-model="restaurant.name" v-on:keyup.enter="displayInputName = !displayInputName"></md-input>
         </md-field>
 
         <md-button
@@ -44,7 +44,7 @@
 
         <md-field v-if="displayInputCuisine">
           <label>Cuisine</label>
-          <md-input v-model="restaurant.cuisine"></md-input>
+          <md-input v-model="restaurant.cuisine" v-on:keyup.enter="displayInputCuisine = !displayInputCuisine"></md-input>
         </md-field>
 
         <md-button
@@ -67,7 +67,7 @@
 
         <md-field v-if="displayInputBorough">
           <label>Arrondissement</label>
-          <md-input v-model="restaurant.borough"></md-input>
+          <md-input v-model="restaurant.borough" v-on:keyup.enter="displayInputBorough = !displayInputBorough"></md-input>
         </md-field>
 
         <md-button
@@ -90,7 +90,7 @@
 
         <md-field v-if="displayInputZipCode">
           <label>Code postal</label>
-          <md-input v-model="restaurant.address.zipcode"></md-input>
+          <md-input v-model="restaurant.address.zipcode" v-on:keyup.enter="displayInputZipCode = !displayInputZipCode"></md-input>
         </md-field>
 
         <md-button
@@ -113,7 +113,7 @@
 
         <md-field v-if="displayInputStreet">
           <label>Rue</label>
-          <md-input v-model="restaurant.address.street"></md-input>
+          <md-input v-model="restaurant.address.street" v-on:keyup.enter="displayInputStreet = !displayInputStreet"></md-input>
         </md-field>
 
         <md-button
@@ -125,6 +125,11 @@
         </md-button>
       </md-list-item>
     </md-list>
+
+    <md-button class="md-primary md-raised" v-on:click="update" >
+      <md-icon>cached</md-icon>
+      Mettre à jour
+    </md-button>
   </div>
 </template>
 
@@ -174,7 +179,9 @@ export default {
       this.$emit("display",false);
       console.log("retour clicked");
     },
-
+    update: function(){
+      this.$emit("restaurantUpdated",this.restaurant)
+    }
   }
 };
 </script>

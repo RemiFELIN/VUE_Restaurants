@@ -8,7 +8,7 @@
         <md-icon class="md-primary">create</md-icon>
         <md-field>
           <label>Nom</label>
-          <md-input v-model="nom"></md-input>
+          <md-input v-model="nom" v-on:keyup.enter="onEnter"></md-input>
         </md-field>
       </md-list-item>
 
@@ -16,7 +16,7 @@
         <md-icon class="md-primary">kitchen</md-icon>
         <md-field>
           <label>Cuisine</label>
-          <md-input v-model="cuisine"></md-input>
+          <md-input v-model="cuisine" v-on:keyup.enter="onEnter"></md-input>
         </md-field>
       </md-list-item>
 
@@ -24,7 +24,7 @@
         <md-icon class="md-primary">streetview</md-icon>
         <md-field>
           <label>Rue</label>
-          <md-input v-model="street"></md-input>
+          <md-input v-model="street" v-on:keyup.enter="onEnter"></md-input>
         </md-field>
       </md-list-item>
 
@@ -32,12 +32,17 @@
         <md-icon class="md-primary">location_searching</md-icon>
         <md-field>
           <label>Code Postal</label>
-          <md-input v-model="zipCode"></md-input>
+          <md-input v-model="zipCode" v-on:keyup.enter="onEnter"></md-input>
         </md-field>
       </md-list-item>
 
       <md-list-item>
-        <md-button class="md-raised md-primary" style="margin:auto" v-on:click="submit">Ajouter</md-button>
+        <md-button
+          class="md-raised md-primary"
+          style="margin:auto"
+          v-on:click="submit"
+          v-bind:disabled="this.nom == '' || this.cuisine == '' || this.street == '' || this.zipCode == ''"
+        >Ajouter</md-button>
       </md-list-item>
     </md-list>
   </div>
@@ -46,14 +51,13 @@
 <script>
 export default {
   name: "addCuisine",
-  props:{
-    displayAddCuisine:{
-      type:Boolean
+  props: {
+    displayAddCuisine: {
+      type: Boolean
     }
   },
-  watch:{
-    displayAddCuisine:function(){
-      console.log('displayAddCuisnie' ,this.displayAddCuisine)
+  watch: {
+    displayAddCuisine: function() {
       this.display = this.displayAddCuisine;
     }
   },
@@ -63,34 +67,28 @@ export default {
       cuisine: "",
       zipCode: "",
       street: "",
-      display:true
+      display: true
     };
   },
   methods: {
     submit: function() {
-      var virgule = /;/i;
-      if (
-        this.nom.match(virgule) ||
-        this.cuisine.match(virgule) ||
-        this.street.match(virgule) ||
-        this.zipCode.match(virgule)
-      )
-        alert("Le caractère ';' est interdit !");
-      else if (
-        this.nom != "" &&
-        this.cuisine != "" &&
-        this.street != "" &&
-        this.zipCode != ""
-      ) {
-        this.$emit(
-          "inputData",
-          this.nom + ";" + this.cuisine + ";" + this.street + ";" + this.zipCode
-        );
-        this.cuisine = "";
-        this.nom = "";
-        this.street = "";
-        this.zipCode = "";
-      }
+      var restaurant = {
+        name: this.nom,
+        cuisine: this.cuisine,
+        address: {
+          street: this.street,
+          zipcode: this.zipCode
+        }
+      };
+      this.$emit("inputData", restaurant);
+      this.cuisine = "";
+      this.nom = "";
+      this.street = "";
+      this.zipCode = "";
+    },
+    onEnter: function() {
+      if(this.nom != '' && this.cuisine != '' && this.street != '' && this.zipCode != '')
+        this.submit();
     }
     //   async supprimerRestaurant(id) {
     //     try {

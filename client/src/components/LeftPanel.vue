@@ -2,7 +2,7 @@
 <template >
   <div id="leftPanel">
     <addCuisine @inputData="updateMessage" :displayAddCuisine="display"></addCuisine>
-    <displayRestaurant @display="updateDisplay" :msg="currentRestaurant"></displayRestaurant>
+    <displayRestaurant @display="updateDisplay" @restaurantUpdated="updateMessage" :msg="currentRestaurant"></displayRestaurant>
   </div>
 </template>
 
@@ -48,6 +48,9 @@ export default {
     updateDisplay(){
       this.display = true;
     },
+    updateRestaurant(variable){
+      this.$emit("restaurantUpdated",variable)
+    }
     //   async supprimerRestaurant(id) {
     //     try {
     //       let reponseJSON = await fetch(this.apiBaseURL + "/" + id, {
