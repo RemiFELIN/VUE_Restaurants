@@ -1,17 +1,15 @@
 
 <template>
   <div id="displayRestaurant" v-if="display">
-    <md-button  @click="retour">
-
-    <md-subheader>
-      <md-icon  class="retour-icon">keyboard_backspace</md-icon>
-      Retour
-    </md-subheader>
+    <md-button @click="retour">
+      <md-subheader>
+        <md-icon class="retour-icon">keyboard_backspace</md-icon>Retour
+      </md-subheader>
     </md-button>
 
     <md-list class="md-double-line">
       <!--Nom du restaurant-->
-      <md-list-item >
+      <md-list-item>
         <md-icon class="md-primary">assignment</md-icon>
 
         <div v-if="!displayInputName" class="md-list-item-text">
@@ -21,7 +19,10 @@
 
         <md-field v-if="displayInputName">
           <label>Nom</label>
-          <md-input v-model="restaurant.name" v-on:keyup.enter="displayInputName = !displayInputName"></md-input>
+          <md-input
+            v-model="restaurant.name"
+            v-on:keyup.enter="displayInputName = !displayInputName"
+          ></md-input>
         </md-field>
 
         <md-button
@@ -44,7 +45,10 @@
 
         <md-field v-if="displayInputCuisine">
           <label>Cuisine</label>
-          <md-input v-model="restaurant.cuisine" v-on:keyup.enter="displayInputCuisine = !displayInputCuisine"></md-input>
+          <md-input
+            v-model="restaurant.cuisine"
+            v-on:keyup.enter="displayInputCuisine = !displayInputCuisine"
+          ></md-input>
         </md-field>
 
         <md-button
@@ -67,7 +71,10 @@
 
         <md-field v-if="displayInputBorough">
           <label>Arrondissement</label>
-          <md-input v-model="restaurant.borough" v-on:keyup.enter="displayInputBorough = !displayInputBorough"></md-input>
+          <md-input
+            v-model="restaurant.borough"
+            v-on:keyup.enter="displayInputBorough = !displayInputBorough"
+          ></md-input>
         </md-field>
 
         <md-button
@@ -90,7 +97,10 @@
 
         <md-field v-if="displayInputZipCode">
           <label>Code postal</label>
-          <md-input v-model="restaurant.address.zipcode" v-on:keyup.enter="displayInputZipCode = !displayInputZipCode"></md-input>
+          <md-input
+            v-model="restaurant.address.zipcode"
+            v-on:keyup.enter="displayInputZipCode = !displayInputZipCode"
+          ></md-input>
         </md-field>
 
         <md-button
@@ -113,7 +123,10 @@
 
         <md-field v-if="displayInputStreet">
           <label>Rue</label>
-          <md-input v-model="restaurant.address.street" v-on:keyup.enter="displayInputStreet = !displayInputStreet"></md-input>
+          <md-input
+            v-model="restaurant.address.street"
+            v-on:keyup.enter="displayInputStreet = !displayInputStreet"
+          ></md-input>
         </md-field>
 
         <md-button
@@ -126,9 +139,12 @@
       </md-list-item>
     </md-list>
 
-    <md-button class="md-primary md-raised" v-on:click="update" >
-      <md-icon>cached</md-icon>
-      Mettre à jour
+    <md-button class="md-primary md-raised" v-on:click="update">
+      <md-icon>cached</md-icon>Mettre à jour
+    </md-button>
+
+    <md-button class="md-accent md-raised" v-on:click="deleteRestaurant()">
+      <md-icon>delete</md-icon>Supprimer
     </md-button>
   </div>
 </template>
@@ -143,8 +159,9 @@ export default {
   },
   watch: {
     msg: function() {
-      console.log("display restaurant:", this.msg);
       this.display = true;
+      this.msg.delete = false;
+      this.msg.update = false;
       this.restaurant = this.msg;
     }
   },
@@ -161,6 +178,7 @@ export default {
       inputCuisine: "",
       displayInputBorough: false,
       inputBorough: "",
+      apiBaseURL: "http://localhost:9000/api/restaurants",
       restaurant: {
         restaurant_id: null,
         name: null,
@@ -176,11 +194,15 @@ export default {
   methods: {
     retour: function() {
       this.display = false;
-      this.$emit("display",false);
-      console.log("retour clicked");
+      this.$emit("display", false);
     },
-    update: function(){
-      this.$emit("restaurantUpdated",this.restaurant)
+    update: function() {
+      this.restaurant.update = true;
+      this.$emit("restaurantUpdated", this.restaurant);
+    },
+    deleteRestaurant: function() {
+      this.restaurant.delete = true;
+      this.$emit("restaurantUpdated", this.restaurant);
     }
   }
 };

@@ -21,9 +21,17 @@
       </md-list-item>
 
       <md-list-item>
+        <md-icon class="md-primary">location_city</md-icon>
+        <md-field>
+          <label>Arrondissement (optionnel)</label>
+          <md-input v-model="borough" v-on:keyup.enter="onEnter"></md-input>
+        </md-field>
+      </md-list-item>
+
+      <md-list-item>
         <md-icon class="md-primary">streetview</md-icon>
         <md-field>
-          <label>Rue</label>
+          <label>Rue (optionnel)</label>
           <md-input v-model="street" v-on:keyup.enter="onEnter"></md-input>
         </md-field>
       </md-list-item>
@@ -31,7 +39,7 @@
       <md-list-item>
         <md-icon class="md-primary">location_searching</md-icon>
         <md-field>
-          <label>Code Postal</label>
+          <label>Code Postal (optionnel)</label>
           <md-input v-model="zipCode" v-on:keyup.enter="onEnter"></md-input>
         </md-field>
       </md-list-item>
@@ -41,7 +49,7 @@
           class="md-raised md-primary"
           style="margin:auto"
           v-on:click="submit"
-          v-bind:disabled="this.nom == '' || this.cuisine == '' || this.street == '' || this.zipCode == ''"
+          v-bind:disabled="this.nom == '' || this.cuisine == ''"
         >Ajouter</md-button>
       </md-list-item>
     </md-list>
@@ -67,6 +75,7 @@ export default {
       cuisine: "",
       zipCode: "",
       street: "",
+      borough: "",
       display: true
     };
   },
@@ -75,6 +84,7 @@ export default {
       var restaurant = {
         name: this.nom,
         cuisine: this.cuisine,
+        borough: this.borough,
         address: {
           street: this.street,
           zipcode: this.zipCode
@@ -85,9 +95,13 @@ export default {
       this.nom = "";
       this.street = "";
       this.zipCode = "";
+      this.borough = "";
     },
     onEnter: function() {
-      if(this.nom != '' && this.cuisine != '' && this.street != '' && this.zipCode != '')
+      if (
+        this.nom != "" &&
+        this.cuisine != "" 
+      )
         this.submit();
     }
     //   async supprimerRestaurant(id) {

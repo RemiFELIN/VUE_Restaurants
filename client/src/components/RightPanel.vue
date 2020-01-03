@@ -2,12 +2,12 @@
   <div id="RightPanel">
     <md-table>
       <md-table-row>
-        <!-- <md-table-head md-numeric>ID</md-table-head> -->
         <md-table-head>Nom</md-table-head>
         <md-table-head>Cuisine</md-table-head>
-        <!-- <md-table-head>Arrondissement</md-table-head> -->
+        <md-table-head>Arrondissement</md-table-head>
         <md-table-head>Rue</md-table-head>
         <md-table-head>Code Postal</md-table-head>
+        <md-table-head></md-table-head>
       </md-table-row>
 
       <md-table-row
@@ -16,10 +16,9 @@
         v-on:click="sendRestaurantData(item)"
         style="cursor:pointer"
       >
-        <!-- <md-table-cell md-numeric>{{item.restaurant_id}}</md-table-cell> -->
         <md-table-cell>{{item.name}}</md-table-cell>
         <md-table-cell>{{item.cuisine}}</md-table-cell>
-        <!-- <md-table-cell>{{item.borough}}</md-table-cell> -->
+        <md-table-cell>{{item.borough}}</md-table-cell>
         <md-table-cell>{{item.address.street}}</md-table-cell>
         <md-table-cell>{{item.address.zipcode}}</md-table-cell>
       </md-table-row>
@@ -31,7 +30,7 @@
 export default {
   name: "RightPanel",
   props: {
-    msg: {}
+    msg: {},
   },
   data() {
     return {
@@ -39,7 +38,7 @@ export default {
       nbRestaurants: 0,
       apiBaseURL: "http://localhost:9000/api/restaurants",
       page: 0,
-      pagesize: 20,
+      pagesize: 10,
       nomRecherche: "",
       restaurant: null
     };
@@ -47,9 +46,12 @@ export default {
   watch: {
     msg: function() {
       this.restaurant = this.msg;
-      if (this.restaurant.restaurant_id) this.modifierRestaurant(this.restaurant);
+      if (this.restaurant.update)
+        this.modifierRestaurant(this.restaurant);
+      else if (this.restaurant.delete)
+        this.supprimerRestaurant(this.restaurant._id)
       else this.ajouterRestaurant(this.restaurant);
-    }
+    },
   },
   mounted() {
     this.getDataFromServer();
@@ -75,12 +77,12 @@ export default {
       }
     },
     async ajouterRestaurant(restaurant) {
-      this.restaurants.push(restaurant);
       let donneesFormulaire = new FormData();
       donneesFormulaire.append("name", restaurant.name);
       donneesFormulaire.append("cuisine", restaurant.cuisine);
-      donneesFormulaire.append("address.street", restaurant.address.street);
-      donneesFormulaire.append("address.zipcode", restaurant.address.zipcode);
+      donneesFormulaire.append("borough", restaurant.borough);
+      donneesFormulaire.append("street", restaurant.address.street);
+      donneesFormulaire.append("zipcode", restaurant.address.zipcode);
 
       let reponseJSON = await fetch(this.apiBaseURL, {
         method: "POST",
@@ -88,9 +90,6 @@ export default {
       });
       let reponseJS = await reponseJSON.json();
       console.log(reponseJS.msg);
-    },
-    sendRestaurantData(restaurant) {
-      this.$emit("restaurantData", restaurant);
     },
     async supprimerRestaurant(id) {
       try {
@@ -107,18 +106,24 @@ export default {
     async modifierRestaurant(restaurant) {
       try {
         let donneesFormulaire = new FormData();
-        donneesFormulaire.append("restaurant_id", restaurant.restaurant_id);
+        donneesFormulaire.append("name", restaurant.name);
         donneesFormulaire.append("cuisine", restaurant.cuisine);
-        let reponseJSON = await fetch(this.apiBaseURL + "/" + restaurant.restaurant_id, {
+        donneesFormulaire.append("borough", restaurant.borough);
+        donneesFormulaire.append("street", restaurant.address.street);
+        donneesFormulaire.append("zipcode", restaurant.address.zipcode);
+        let reponseJSON = await fetch(this.apiBaseURL + "/" + restaurant._id, {
           method: "PUT",
           body: donneesFormulaire
         });
         let reponseJS = await reponseJSON.json();
         console.log("Restaurant modifié : " + reponseJS.msg);
-        // this.getDataFromServer(); // on rafraichit l'affichage
+        this.getDataFromServer(); // on rafraichit l'affichage
       } catch (err) {
-        console.log("Erreur dans le fetchs DELETE " + err.msg);
+        console.log("Erreur dans le fetchs PUT " + err.msg);
       }
+    },
+    sendRestaurantData(restaurant) {
+      this.$emit("restaurantData", restaurant);
     }
   }
 };

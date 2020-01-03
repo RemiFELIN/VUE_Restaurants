@@ -6,7 +6,7 @@
         <md-icon>room_service</md-icon>&nbsp;Gestionnaire de menus pour restaurants
       </h3>
     </md-toolbar>
-    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage"  />
+    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage" />
     <RightPanel :msg="childData" @restaurantData="updateCurrentRestaurant" />
   </div>
 </template>
@@ -25,21 +25,21 @@ export default {
   name: "App",
   components: {
     LeftPanel,
-    RightPanel,
+    RightPanel
   },
   data: function() {
     return {
       childData: "",
-      currentRestaurant: "",
+      currentRestaurant: ""
     };
   },
   methods: {
     updateMessage(variable) {
       this.childData = variable;
     },
-    updateCurrentRestaurant(variable){
+    updateCurrentRestaurant(variable) {
       this.currentRestaurant = variable;
-    },
+    }
   }
 };
 </script>
@@ -52,5 +52,4 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
 </style>

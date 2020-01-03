@@ -132,24 +132,29 @@ exports.createRestaurant = function(formData, callback) {
 		var db = client.db(dbName);
 
 	    if(!err) {
-	 
+			console.dir("dans la fonciton createRestaurant:", formData.address)
 			let toInsert = {
-				name : formData.nom, 
-				cuisine : formData.cuisine
+	        	name : formData.name, 
+				cuisine : formData.cuisine,
+				borough : formData.borough == "" ? "Non définie" : formData.borough,
+				address:{
+					street:formData.street == "" ? "Non définie" : formData.street,
+					zipcode:formData.zipcode == "" ? "Non défini" : formData.zipcode
+				}
 			};
 			console.dir(JSON.stringify(toInsert));
 		    db.collection("restaurants")
 		    .insert(toInsert, function(err, insertedId) {
 		    	let reponse;
 
-		    	console.log('++++'+insertedId)
+		    	console.log('++++'+insertedId.ops[0])
 
 		        if(!err){
 		            reponse = {
 		                succes : true,
 		                result: insertedId.ops[0]._id,
 		                error : null,
-		                msg: "Ajout réussi " + insertedId.ops[0]._id
+		                msg: "Ajout réussi " + insertedId.ops[0].name
 		            };
 		        } else {
 		            reponse = {
@@ -179,8 +184,13 @@ exports.updateRestaurant = function(id, formData, callback) {
 		if(!err) {
             let myquery = { "_id": ObjectId(id)};
 	        let newvalues = {
-	        	name : formData.nom, 
-	        	cuisine : formData.cuisine
+	        	name : formData.name, 
+				cuisine : formData.cuisine,
+				borough : formData.borough == "" ? "Non définie" : formData.borough,
+				address:{
+					street:formData.street == "" ? "Non définie" : formData.street,
+					zipcode:formData.zipcode == "" ? "Non défini" : formData.zipcode
+				}
 	        };
 
 
