@@ -1,6 +1,11 @@
 <template>
   <div id="RightPanel">
     <md-table>
+      <md-table-toolbar>
+        <md-field md-clearable class="md-toolbar-section-end">
+          <md-input placeholder="Rechercher par nom..." v-model="search" />
+        </md-field>
+      </md-table-toolbar>
       <md-table-row>
         <md-table-head>Nom</md-table-head>
         <md-table-head>Cuisine</md-table-head>
@@ -30,10 +35,12 @@
 export default {
   name: "RightPanel",
   props: {
-    msg: {},
+    msg: {}
   },
   data() {
     return {
+      search: null,
+      searched: [],
       restaurants: [],
       nbRestaurants: 0,
       apiBaseURL: "http://localhost:9000/api/restaurants",
@@ -46,12 +53,11 @@ export default {
   watch: {
     msg: function() {
       this.restaurant = this.msg;
-      if (this.restaurant.update)
-        this.modifierRestaurant(this.restaurant);
+      if (this.restaurant.update) this.modifierRestaurant(this.restaurant);
       else if (this.restaurant.delete)
-        this.supprimerRestaurant(this.restaurant._id)
+        this.supprimerRestaurant(this.restaurant._id);
       else this.ajouterRestaurant(this.restaurant);
-    },
+    }
   },
   mounted() {
     this.getDataFromServer();
