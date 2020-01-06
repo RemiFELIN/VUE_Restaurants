@@ -21,6 +21,10 @@ export default {
       type: null
     }
   },
+  mounted(){
+    // var headerHeight = document.getElementById("header").style.height;
+    // document.getElementById("LeftPanel").style.height = window.height - headerHeight;
+  },
   watch: {
     msg: function() {
       if (typeof this.msg == "object") {

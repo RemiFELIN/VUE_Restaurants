@@ -86,32 +86,6 @@
         </md-button>
       </md-list-item>
 
-      <!--Code postal du restaurant-->
-      <md-list-item>
-        <md-icon class="md-primary">gps_not_fixed</md-icon>
-
-        <div v-if="!displayInputZipCode" class="md-list-item-text">
-          <span>Code postal</span>
-          <span>{{restaurant.address.zipcode}}</span>
-        </div>
-
-        <md-field v-if="displayInputZipCode">
-          <label>Code postal</label>
-          <md-input
-            v-model="restaurant.address.zipcode"
-            v-on:keyup.enter="displayInputZipCode = !displayInputZipCode"
-          ></md-input>
-        </md-field>
-
-        <md-button
-          class="md-icon-button md-list-action"
-          v-on:click="displayInputZipCode = !displayInputZipCode"
-        >
-          <md-icon v-if="!displayInputZipCode">edit</md-icon>
-          <md-icon v-if="displayInputZipCode">check_circle</md-icon>
-        </md-button>
-      </md-list-item>
-
       <!--Rue du restaurant-->
       <md-list-item>
         <md-icon class="md-primary">streetview</md-icon>
@@ -135,6 +109,32 @@
         >
           <md-icon v-if="!displayInputStreet">edit</md-icon>
           <md-icon v-if="displayInputStreet">check_circle</md-icon>
+        </md-button>
+      </md-list-item>
+
+      <!--Code postal du restaurant-->
+      <md-list-item>
+        <md-icon class="md-primary">gps_not_fixed</md-icon>
+
+        <div v-if="!displayInputZipCode" class="md-list-item-text">
+          <span>Code postal</span>
+          <span>{{restaurant.address.zipcode}}</span>
+        </div>
+
+        <md-field v-if="displayInputZipCode">
+          <label>Code postal</label>
+          <md-input
+            v-model="restaurant.address.zipcode"
+            v-on:keyup.enter="displayInputZipCode = !displayInputZipCode"
+          ></md-input>
+        </md-field>
+
+        <md-button
+          class="md-icon-button md-list-action"
+          v-on:click="displayInputZipCode = !displayInputZipCode"
+        >
+          <md-icon v-if="!displayInputZipCode">edit</md-icon>
+          <md-icon v-if="displayInputZipCode">check_circle</md-icon>
         </md-button>
       </md-list-item>
     </md-list>

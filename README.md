@@ -36,9 +36,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 # Server
-```
-cd Server
-```
+
 
 ## Project setup
 Install mongoDB, you can refer to this link: [official website](https://docs.mongodb.org/manual/installation/).

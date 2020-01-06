@@ -1,31 +1,27 @@
 <template>
   <div id="RightPanel">
-    <md-table>
+    <md-table v-model="restaurants" md-sort="name" md-sort-order="asc">
       <md-table-toolbar>
         <md-field md-clearable class="md-toolbar-section-end">
-          <md-input placeholder="Rechercher par nom..." v-model="search" />
+          <md-input
+            placeholder="Rechercher par nom..."
+            v-model="nomRecherche"
+            @input="getDataFromServer()"
+          />
         </md-field>
       </md-table-toolbar>
-      <md-table-row>
-        <md-table-head>Nom</md-table-head>
-        <md-table-head>Cuisine</md-table-head>
-        <md-table-head>Arrondissement</md-table-head>
-        <md-table-head>Rue</md-table-head>
-        <md-table-head>Code Postal</md-table-head>
-        <md-table-head></md-table-head>
-      </md-table-row>
 
       <md-table-row
-        v-for="item in restaurants"
-        :key="item.id"
+        slot="md-table-row"
+        slot-scope="{ item }"
         v-on:click="sendRestaurantData(item)"
         style="cursor:pointer"
       >
-        <md-table-cell>{{item.name}}</md-table-cell>
-        <md-table-cell>{{item.cuisine}}</md-table-cell>
-        <md-table-cell>{{item.borough}}</md-table-cell>
-        <md-table-cell>{{item.address.street}}</md-table-cell>
-        <md-table-cell>{{item.address.zipcode}}</md-table-cell>
+        <md-table-cell md-label="Nom" md-sort-by="name">{{ item.name }}</md-table-cell>
+        <md-table-cell md-label="Cuisine" md-sort-by="cuisine">{{ item.cuisine }}</md-table-cell>
+        <md-table-cell md-label="Arrondissement" md-sort-by="borough">{{item.borough}}</md-table-cell>
+        <md-table-cell md-label="Rue" md-sort-by="address.street">{{item.address.street}}</md-table-cell>
+        <md-table-cell md-label="Code postal" md-sort-by="address.zipcode">{{item.address.zipcode}}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -39,13 +35,11 @@ export default {
   },
   data() {
     return {
-      search: null,
-      searched: [],
       restaurants: [],
       nbRestaurants: 0,
       apiBaseURL: "http://localhost:9000/api/restaurants",
       page: 0,
-      pagesize: 10,
+      pagesize: 30,
       nomRecherche: "",
       restaurant: null
     };
@@ -61,6 +55,9 @@ export default {
   },
   mounted() {
     this.getDataFromServer();
+    var headerHeight = document.getElementById("header").style.height;
+    document.getElementById("RightPanel").style.height =
+      window.height - headerHeight;
   },
   methods: {
     async getDataFromServer() {
@@ -95,6 +92,7 @@ export default {
         body: donneesFormulaire
       });
       let reponseJS = await reponseJSON.json();
+      this.getDataFromServer();
       console.log(reponseJS.msg);
     },
     async supprimerRestaurant(id) {

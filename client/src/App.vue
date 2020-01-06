@@ -1,7 +1,7 @@
 
 <template>
   <div id="app">
-    <md-toolbar class="md-primary">
+    <md-toolbar class="md-primary" id="header">
       <h3 class="md-title">
         <md-icon>room_service</md-icon>&nbsp;Gestionnaire de menus pour restaurants
       </h3>
@@ -10,7 +10,6 @@
     <RightPanel :msg="childData" @restaurantData="updateCurrentRestaurant" />
   </div>
 </template>
-
 <script>
 import LeftPanel from "./components/LeftPanel.vue";
 import RightPanel from "./components/RightPanel.vue";
