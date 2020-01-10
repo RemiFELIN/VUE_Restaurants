@@ -2,13 +2,17 @@
 <template >
   <div id="leftPanel">
     <addCuisine @inputData="updateMessage" :displayAddCuisine="display"></addCuisine>
-    <displayRestaurant @display="updateDisplay" @restaurantUpdated="updateMessage" :msg="currentRestaurant"></displayRestaurant>
+    <displayRestaurant
+      @display="updateDisplay"
+      @restaurantUpdated="updateMessage"
+      :msg="currentRestaurant"
+    ></displayRestaurant>
   </div>
 </template>
 
 <script>
-import addCuisine from "./leftPanel/addCuisine";
-import displayRestaurant from "./leftPanel/displayRestaurant";
+import addCuisine from "./leftPanel/AddCuisine";
+import displayRestaurant from "./leftPanel/DisplayRestaurant";
 
 export default {
   components: {
@@ -21,9 +25,11 @@ export default {
       type: null
     }
   },
-  mounted(){
-    // var headerHeight = document.getElementById("header").style.height;
-    // document.getElementById("LeftPanel").style.height = window.height - headerHeight;
+  mounted() {
+    var headerHeight = document.getElementById("app").offsetHeight;
+    var leftPanel = document.getElementById("leftPanel");
+    var newHeight = window.innerHeight - headerHeight;
+    leftPanel.style.height = newHeight + "px";
   },
   watch: {
     msg: function() {
@@ -36,19 +42,19 @@ export default {
   data() {
     return {
       currentRestaurant: null,
-      display:true
+      display: true
     };
   },
   methods: {
     updateMessage(variable) {
       this.$emit("inputData", variable);
     },
-    updateDisplay(){
+    updateDisplay() {
       this.display = true;
     },
-    updateRestaurant(variable){
-      this.$emit("restaurantUpdated",variable)
-    },
+    updateRestaurant(variable) {
+      this.$emit("restaurantUpdated", variable);
+    }
     //   pageSuivante() {
     //     console.log("page suivante");
     //     this.page++;
@@ -70,6 +76,7 @@ export default {
   height: 100%;
   position: fixed;
   background: white;
+  overflow-y: auto;
 }
 </style>
 
