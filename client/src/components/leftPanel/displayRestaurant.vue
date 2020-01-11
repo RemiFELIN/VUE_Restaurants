@@ -1,4 +1,3 @@
-
 <template>
   <div id="displayRestaurant" v-if="display">
     <md-button @click="retour">
@@ -139,13 +138,22 @@
       </md-list-item>
     </md-list>
 
+    <!-- METTRE A JOUR -->
     <md-button class="md-primary md-raised" v-on:click="update">
       <md-icon>cached</md-icon>Mettre à jour
     </md-button>
 
+    <!-- DELETE -->
     <md-button class="md-accent md-raised" v-on:click="deleteRestaurant()">
       <md-icon>delete</md-icon>Supprimer
     </md-button>
+
+    <!-- AFFICHER LA CARTE -->
+    <md-button class="md-raised test" v-on:click="showModal = true">
+      <md-icon class="test">streetview</md-icon>Afficher la carte
+      <modal v-if="showModal" @close="showModal = false"></modal>
+    </md-button>    
+
   </div>
 </template>
 
@@ -211,5 +219,8 @@ export default {
 <style >
 .retour-icon {
   margin: 0% 0% 0% 0% !important;
+}
+.test {
+  color: green !important;
 }
 </style>
