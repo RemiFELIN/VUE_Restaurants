@@ -3,17 +3,20 @@
   <div id="leftPanel">
     <addCuisine @inputData="updateMessage" :displayAddCuisine="display"></addCuisine>
     <displayRestaurant @display="updateDisplay" @restaurantUpdated="updateMessage" :msg="currentRestaurant"></displayRestaurant>
+    <viewRestaurant></viewRestaurant>
   </div>
 </template>
 
 <script>
 import addCuisine from "./leftPanel/addCuisine";
 import displayRestaurant from "./leftPanel/displayRestaurant";
+import viewRestaurant from "./leftPanel/viewRestaurant";
 
 export default {
   components: {
     addCuisine,
-    displayRestaurant
+    displayRestaurant,
+    viewRestaurant
   },
   name: "LeftPanel",
   props: {
