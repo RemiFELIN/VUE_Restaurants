@@ -55,9 +55,7 @@ export default {
   },
   mounted() {
     this.getDataFromServer();
-    var bottomHeight = document.getElementById("footer").style.height;
-    console.log(bottomHeight)
-    document.getElementById("listeRestaurant").style.height = window.height - bottomHeight;
+    this.resizeWindow();
   },
   methods: {
     async getDataFromServer() {
@@ -78,6 +76,13 @@ export default {
       } catch (err) {
         console.log("Erreur dans les fetchs GET " + err.msg);
       }
+    },
+    resizeWindow() {
+      var headerHeight = document.getElementById("app").offsetHeight;
+      var footerHeight = document.getElementById("footer").offsetHeight;
+      var listeRestaurant = document.getElementById("listeRestaurant");
+      var newHeight = window.innerHeight - (headerHeight + footerHeight);
+      listeRestaurant.style.height = newHeight + "px";
     },
     async ajouterRestaurant(restaurant) {
       let donneesFormulaire = new FormData();
@@ -137,5 +142,9 @@ export default {
 <style >
 .md-table-head {
   text-align: center !important;
+}
+#listeRestaurant {
+  height: calc(100% - 84);
+  overflow-y: auto;
 }
 </style>

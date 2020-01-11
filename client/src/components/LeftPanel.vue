@@ -2,21 +2,22 @@
 <template >
   <div id="leftPanel">
     <addCuisine @inputData="updateMessage" :displayAddCuisine="display"></addCuisine>
-    <displayRestaurant @display="updateDisplay" @restaurantUpdated="updateMessage" :msg="currentRestaurant"></displayRestaurant>
-    <viewRestaurant></viewRestaurant>
+    <displayRestaurant
+      @display="updateDisplay"
+      @restaurantUpdated="updateMessage"
+      :msg="currentRestaurant"
+    ></displayRestaurant>
   </div>
 </template>
 
 <script>
 import addCuisine from "./leftPanel/addCuisine";
 import displayRestaurant from "./leftPanel/displayRestaurant";
-import viewRestaurant from "./leftPanel/viewRestaurant";
 
 export default {
   components: {
     addCuisine,
-    displayRestaurant,
-    viewRestaurant
+    displayRestaurant
   },
   name: "LeftPanel",
   props: {
@@ -24,9 +25,8 @@ export default {
       type: null
     }
   },
-  mounted(){
-    // var headerHeight = document.getElementById("header").style.height;
-    // document.getElementById("LeftPanel").style.height = window.height - headerHeight;
+  mounted() {
+    this.resizeWindow();
   },
   watch: {
     msg: function() {
@@ -39,19 +39,25 @@ export default {
   data() {
     return {
       currentRestaurant: null,
-      display:true
+      display: true
     };
   },
   methods: {
     updateMessage(variable) {
       this.$emit("inputData", variable);
     },
-    updateDisplay(){
+    updateDisplay() {
       this.display = true;
     },
-    updateRestaurant(variable){
-      this.$emit("restaurantUpdated",variable)
+    updateRestaurant(variable) {
+      this.$emit("restaurantUpdated", variable);
     },
+    resizeWindow() {
+      var headerHeight = document.getElementById("app").offsetHeight;
+      var leftPanel = document.getElementById("leftPanel");
+      var newHeight = window.innerHeight - headerHeight;
+      leftPanel.style.height = newHeight + "px";
+    }
     //   pageSuivante() {
     //     console.log("page suivante");
     //     this.page++;
@@ -73,6 +79,7 @@ export default {
   height: 100%;
   position: fixed;
   background: white;
+  overflow-y: auto;
 }
 </style>
 

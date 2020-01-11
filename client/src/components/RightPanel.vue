@@ -22,10 +22,7 @@ export default {
     listeRestaurant
   },
   mounted() {
-    var headerHeight = document.getElementById("header").style.height;
-    console.log(headerHeight)
-    document.getElementById("listeRestaurant").style.height =
-      window.height - headerHeight;
+    this.resizeWindow();
   },
   data() {
     return {
@@ -36,6 +33,12 @@ export default {
   methods: {
     updateCurrentRestaurant(variable) {
       this.$emit("restaurantData", variable);
+    },
+    resizeWindow() {
+      var headerHeight = document.getElementById("app").offsetHeight;
+      var RightPanel = document.getElementById("RightPanel");
+      var newHeight = window.innerHeight - headerHeight;
+      RightPanel.style.height = newHeight + "px";
     }
   }
 };
