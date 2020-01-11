@@ -8,11 +8,13 @@
     </md-toolbar>
     <LeftPanel :msg="currentRestaurant" @inputData="updateMessage" />
     <RightPanel :msg="childData" @restaurantData="updateCurrentRestaurant" />
+    <viewRestaurant></viewRestaurant>
   </div>
 </template>
 <script>
 import LeftPanel from "./components/LeftPanel.vue";
 import RightPanel from "./components/RightPanel.vue";
+import viewRestaurant from "./components/leftPanel/viewRestaurant.vue";
 import Vue from "vue";
 import VueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
@@ -24,12 +26,14 @@ export default {
   name: "App",
   components: {
     LeftPanel,
-    RightPanel
+    RightPanel,
+    viewRestaurant
   },
   data: function() {
     return {
       childData: "",
-      currentRestaurant: ""
+      currentRestaurant: "",
+      showModal: false
     };
   },
   methods: {

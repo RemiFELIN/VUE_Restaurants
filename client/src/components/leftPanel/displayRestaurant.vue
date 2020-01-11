@@ -149,17 +149,22 @@
     </md-button>
 
     <!-- AFFICHER LA CARTE -->
-    <md-button class="md-raised test" v-on:click="showModal = true">
-      <md-icon class="test">streetview</md-icon>Afficher la carte
-      <modal v-if="showModal" @close="showModal = false"></modal>
-    </md-button>    
+    <md-button class="md-raised maps" v-on:click="launch()">
+      <md-icon style="color:white">streetview</md-icon>Afficher la carte
+      <viewRestaurant @close="quit()"></viewRestaurant>
+    </md-button>  
 
   </div>
 </template>
 
 <script>
+import viewRestaurant from "./viewRestaurant.vue";
+
 export default {
   name: "displayRestaurant",
+  components: {
+    viewRestaurant
+  },
   props: {
     msg: {
       type: null
@@ -186,6 +191,7 @@ export default {
       inputCuisine: "",
       displayInputBorough: false,
       inputBorough: "",
+      showModal: false,
       apiBaseURL: "http://localhost:9000/api/restaurants",
       restaurant: {
         restaurant_id: null,
@@ -211,7 +217,14 @@ export default {
     deleteRestaurant: function() {
       this.restaurant.delete = true;
       this.$emit("restaurantUpdated", this.restaurant);
-    }
+    },
+    launch() {
+      this.$emit("showModal", this.showModal = true);
+      console.log("afficher la carte : OK\nshowModal = " + this.showModal)  
+    },
+    quit() {
+      this.$emit("showModal", this.showModal = false);
+    },
   }
 };
 </script>
@@ -220,7 +233,8 @@ export default {
 .retour-icon {
   margin: 0% 0% 0% 0% !important;
 }
-.test {
-  color: green !important;
+.maps.md-button.md-theme-default.md-raised:not([disabled]) {
+  background-color: #26BD07 !important;
+  color:white;
 }
 </style>
