@@ -1,12 +1,12 @@
 <template>
-  <div id="rightPanel">
-    <ListeRestaurant :msg="childData" @restaurantData="updateCurrentRestaurant" />
-    <md-bottom-bar style="position:fixed;bottom:0;" id="footer">Bonjour<br>Aurevoir</md-bottom-bar>
+  <div id="RightPanel">
+    <listeRestaurant :msg="childData" @restaurantData="updateCurrentRestaurant" />
+    <md-bottom-bar style="position:fixed;bottom:0" id="footer">Bonjour</md-bottom-bar>
   </div>
 </template>
 
 <script>
-import ListeRestaurant from "./rightPanel/ListeRestaurant";
+import listeRestaurant from "./rightPanel/listeRestaurant";
 
 export default {
   name: "RightPanel",
@@ -19,13 +19,13 @@ export default {
     }
   },
   components: {
-    ListeRestaurant
+    listeRestaurant
   },
   mounted() {
-    var headerHeight = document.getElementById("app").offsetHeight;
-    var RightPanel = document.getElementById("rightPanel");
-    var newHeight = window.innerHeight - headerHeight;
-    RightPanel.style.height = newHeight + "px";
+    var headerHeight = document.getElementById("header").style.height;
+    console.log(headerHeight)
+    document.getElementById("listeRestaurant").style.height =
+      window.height - headerHeight;
   },
   data() {
     return {
@@ -43,11 +43,11 @@ export default {
 
 
 <style >
-#rightPanel {
+#RightPanel {
   width: 75%;
   left: 25%;
   border: 1px solid rgba(0, 0, 0, 0.12);
-  height: calc(100% - 64px); /*64px par default mais peut varier*/
+  height: calc(100% - 64px);
   position: fixed;
   background: white;
   overflow-y: auto;
