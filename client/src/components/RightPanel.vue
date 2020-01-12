@@ -1,12 +1,13 @@
 <template>
   <div id="RightPanel">
-    <listeRestaurant :msg="childData" @restaurantData="updateCurrentRestaurant" />
-    <md-bottom-bar style="position:fixed;bottom:0" id="footer">Bonjour</md-bottom-bar>
+    <listeRestaurant :pageNum="pageNum" :msg="childData" @restaurantData="updateCurrentRestaurant"></listeRestaurant>
+    <footerPagination @pageNum="updatePageNum"></footerPagination>
   </div>
 </template>
 
 <script>
 import listeRestaurant from "./rightPanel/listeRestaurant";
+import footerPagination from "./rightPanel/footerPagination";
 
 export default {
   name: "RightPanel",
@@ -19,7 +20,8 @@ export default {
     }
   },
   components: {
-    listeRestaurant
+    listeRestaurant,
+    footerPagination
   },
   mounted() {
     this.resizeWindow();
@@ -27,7 +29,10 @@ export default {
   data() {
     return {
       childData: "",
-      currentRestaurant: ""
+      currentRestaurant: "",
+      resource_url:
+        "http://hootlex.github.io/vuejs-paginator/samples/animals1.json",
+      pageNum: 1
     };
   },
   methods: {
@@ -39,6 +44,12 @@ export default {
       var RightPanel = document.getElementById("RightPanel");
       var newHeight = window.innerHeight - headerHeight;
       RightPanel.style.height = newHeight + "px";
+    },
+    updateResource(data) {
+      this.animals = data;
+    },
+    updatePageNum(pageNum) {
+      this.pageNum = pageNum;
     }
   }
 };

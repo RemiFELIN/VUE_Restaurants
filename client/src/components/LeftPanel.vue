@@ -1,6 +1,6 @@
 
 <template >
-  <div id="leftPanel">
+  <div id="leftPanel" >
     <addCuisine @inputData="updateMessage" :displayAddCuisine="display"></addCuisine>
     <displayRestaurant
       @display="updateDisplay"

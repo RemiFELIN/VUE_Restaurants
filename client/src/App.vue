@@ -1,4 +1,4 @@
-
+<script src="https://unpkg.com/vuejs-paginate@latest"></script>
 <template>
   <div id="app">
     <md-toolbar class="md-primary" id="header">
@@ -9,6 +9,7 @@
     <LeftPanel :msg="currentRestaurant" @inputData="updateMessage" />
     <RightPanel :msg="childData" @restaurantData="updateCurrentRestaurant" />
     <viewRestaurant></viewRestaurant>
+
   </div>
 </template>
 <script>
@@ -21,6 +22,7 @@ import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
 
 Vue.use(VueMaterial);
+Vue.component('paginate', VuejsPaginate)
 
 export default {
   name: "App",

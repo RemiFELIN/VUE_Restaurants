@@ -6,7 +6,7 @@
           <md-input
             placeholder="Rechercher par nom..."
             v-model="nomRecherche"
-            @input="getDataFromServer()"
+            @input="getDataFromServer(0)"
           />
         </md-field>
       </md-table-toolbar>
@@ -16,6 +16,7 @@
         slot-scope="{ item }"
         v-on:click="sendRestaurantData(item)"
         style="cursor:pointer"
+        :class="{active: restaurant === item}"
       >
         <md-table-cell md-label="Nom" md-sort-by="name">{{ item.name }}</md-table-cell>
         <md-table-cell md-label="Cuisine" md-sort-by="cuisine">{{ item.cuisine }}</md-table-cell>
@@ -24,14 +25,27 @@
         <md-table-cell md-label="Code postal" md-sort-by="address.zipcode">{{item.address.zipcode}}</md-table-cell>
       </md-table-row>
     </md-table>
+
+    <md-snackbar
+      md-position="left"
+      :md-duration="4000"
+      :md-active.sync="showSnackbar"
+      md-persistent
+    >
+      <span>{{snackbarText}}</span>
+      <md-button class="md-primary" @click="showSnackbar = false">Fermer</md-button>
+    </md-snackbar>
   </div>
 </template>
 
 <script>
+import RestaurantService from "../../services/RestaurantService";
+
 export default {
   name: "listeRestaurant",
   props: {
-    msg: {}
+    msg: {},
+    pageNum: {}
   },
   data() {
     return {
@@ -41,7 +55,9 @@ export default {
       page: 0,
       pagesize: 30,
       nomRecherche: "",
-      restaurant: null
+      restaurant: null,
+      showSnackbar: false,
+      snackbarText: ""
     };
   },
   watch: {
@@ -51,18 +67,22 @@ export default {
       else if (this.restaurant.delete)
         this.supprimerRestaurant(this.restaurant._id);
       else this.ajouterRestaurant(this.restaurant);
+    },
+    pageNum: function() {
+      this.page = this.pageNum;
+      this.getDataFromServer(this.page);
     }
   },
   mounted() {
-    this.getDataFromServer();
+    this.getDataFromServer(0);
     this.resizeWindow();
   },
   methods: {
-    async getDataFromServer() {
+    async getDataFromServer(page) {
       let url =
         this.apiBaseURL +
         "?page=" +
-        this.page +
+        page +
         "&pagesize=" +
         this.pagesize +
         "&name=" +
@@ -73,13 +93,16 @@ export default {
         let reponseJS = await reponseJSON.json();
         this.restaurants = reponseJS.data;
         this.nbRestaurants = reponseJS.count;
+        RestaurantService.setNbResults(this.nbRestaurants);
+        console.log(RestaurantService.getNbResults())
       } catch (err) {
         console.log("Erreur dans les fetchs GET " + err.msg);
       }
     },
     resizeWindow() {
       var headerHeight = document.getElementById("app").offsetHeight;
-      var footerHeight = document.getElementById("footer").offsetHeight;
+      var footerHeight = document.getElementById("footerPagination")
+        .offsetHeight;
       var listeRestaurant = document.getElementById("listeRestaurant");
       var newHeight = window.innerHeight - (headerHeight + footerHeight);
       listeRestaurant.style.height = newHeight + "px";
@@ -97,8 +120,10 @@ export default {
         body: donneesFormulaire
       });
       let reponseJS = await reponseJSON.json();
-      this.getDataFromServer();
-      console.log(reponseJS.msg);
+      console.log("Restaurant ajouté : " + reponseJS.msg);
+      this.snackbarText = "Le restaurant a bien été ajouté";
+      this.showSnackbar = true;
+      this.getDataFromServer(this.page);
     },
     async supprimerRestaurant(id) {
       try {
@@ -106,8 +131,10 @@ export default {
           method: "DELETE"
         });
         let reponseJS = await reponseJSON.json();
-        console.log("Restaurant supprime : " + reponseJS.msg);
-        this.getDataFromServer(); // on rafraichit l'affichage
+        console.log("Restaurant supprimé : " + reponseJS.msg);
+        this.snackbarText = "Le restaurant a bien été supprimé";
+        this.showSnackbar = true;
+        this.getDataFromServer(this.page); // on rafraichit l'affichage
       } catch (err) {
         console.log("Erreur dans le fetchs DELETE " + err.msg);
       }
@@ -126,12 +153,15 @@ export default {
         });
         let reponseJS = await reponseJSON.json();
         console.log("Restaurant modifié : " + reponseJS.msg);
-        this.getDataFromServer(); // on rafraichit l'affichage
+        this.snackbarText = "Le restaurant a bien été mis à jour";
+        this.showSnackbar = true;
+        this.getDataFromServer(this.page); // on rafraichit l'affichage
       } catch (err) {
         console.log("Erreur dans le fetchs PUT " + err.msg);
       }
     },
     sendRestaurantData(restaurant) {
+      this.restaurant = restaurant;
       this.$emit("restaurantData", restaurant);
     }
   }
@@ -146,5 +176,8 @@ export default {
 #listeRestaurant {
   height: calc(100% - 84);
   overflow-y: auto;
+}
+.active {
+  background-color: lightblue;
 }
 </style>

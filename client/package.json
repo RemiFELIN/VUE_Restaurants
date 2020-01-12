@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "core-js": "^3.4.3",
+    "font-awesome": "^4.7.0",
     "vue": "^2.6.10",
-    "vue-material": "^1.0.0-beta-11"
+    "vue-material": "^1.0.0-beta-11",
+    "vuejs-paginate": "^2.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",

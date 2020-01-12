@@ -152,8 +152,7 @@
     <md-button class="md-raised maps" v-on:click="launch()">
       <md-icon style="color:white">streetview</md-icon>Afficher la carte
       <viewRestaurant @close="quit()"></viewRestaurant>
-    </md-button>  
-
+    </md-button>
   </div>
 </template>
 
@@ -217,14 +216,15 @@ export default {
     deleteRestaurant: function() {
       this.restaurant.delete = true;
       this.$emit("restaurantUpdated", this.restaurant);
+      this.retour();
     },
     launch() {
-      this.$emit("showModal", this.showModal = true);
-      console.log("afficher la carte : OK\nshowModal = " + this.showModal)  
+      this.$emit("showModal", (this.showModal = true));
+      console.log("afficher la carte : OK\nshowModal = " + this.showModal);
     },
     quit() {
-      this.$emit("showModal", this.showModal = false);
-    },
+      this.$emit("showModal", (this.showModal = false));
+    }
   }
 };
 </script>
@@ -234,7 +234,7 @@ export default {
   margin: 0% 0% 0% 0% !important;
 }
 .maps.md-button.md-theme-default.md-raised:not([disabled]) {
-  background-color: #26BD07 !important;
-  color:white;
+  background-color: #26bd07 !important;
+  color: white;
 }
 </style>
