@@ -23,8 +23,9 @@ export default {
   methods: {
     changePage(pageNum) {
       this.$emit("pageNum", pageNum);
-            this.pageCount =  Math.floor(RestaurantService.getNbResults() / RestaurantService.getPageSize());
-
+      this.pageCount = Math.floor(
+        RestaurantService.getNbResults() / RestaurantService.getPageSize()
+      );
     }
   }
 };

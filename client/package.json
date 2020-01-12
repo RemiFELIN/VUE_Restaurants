@@ -10,6 +10,7 @@
   "dependencies": {
     "core-js": "^3.4.3",
     "font-awesome": "^4.7.0",
+    "jquery": "^1.9.1",
     "vue": "^2.6.10",
     "vue-material": "^1.0.0-beta-11",
     "vuejs-paginate": "^2.1.0"

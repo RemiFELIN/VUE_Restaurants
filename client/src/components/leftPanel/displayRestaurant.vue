@@ -7,6 +7,16 @@
     </md-button>
 
     <md-list class="md-double-line">
+      <!-- Note du restaurant -->
+      <md-list-item>
+        <star-rating v-if="restaurant.grades" v-model="noteMoy" style="margin:auto"></star-rating>
+        <star-rating v-if="!restaurant.grades" style="margin:auto"></star-rating>
+      </md-list-item>
+
+      <md-list-item  v-if="!restaurant.grades">
+        <p style="margin:auto">Soyez le premier à noté ce restaurant</p>
+      </md-list-item>
+
       <!--Nom du restaurant-->
       <md-list-item>
         <md-icon class="md-primary">assignment</md-icon>
@@ -175,6 +185,8 @@ export default {
       this.msg.delete = false;
       this.msg.update = false;
       this.restaurant = this.msg;
+      this.moyenneDesScores();
+      console.log(this.restaurant);
     }
   },
   data() {
@@ -191,6 +203,7 @@ export default {
       displayInputBorough: false,
       inputBorough: "",
       showModal: false,
+      noteMoy: 0,
       apiBaseURL: "http://localhost:9000/api/restaurants",
       restaurant: {
         restaurant_id: null,
@@ -200,11 +213,24 @@ export default {
         address: {
           street: null,
           zipcode: null
-        }
+        },
+        grades: [{ date: { $date: null }, grade: null, score: null }]
       }
     };
   },
   methods: {
+    moyenneDesScores: function() {
+      //Moyenne de tout les scores du restaurant sur 20
+      if (this.restaurant.grades) {
+        this.noteMoy = 0;
+        this.restaurant.grades.forEach(item => {
+          this.noteMoy += item.score;
+        });
+        this.noteMoy = Math.floor(
+          this.noteMoy / (this.restaurant.grades.length * 4)
+        );
+      }
+    },
     retour: function() {
       this.display = false;
       this.$emit("display", false);

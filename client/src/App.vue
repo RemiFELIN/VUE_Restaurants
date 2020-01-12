@@ -1,4 +1,5 @@
 <script src="https://unpkg.com/vuejs-paginate@latest"></script>
+<script src="https://unpkg.com/vue-star-rating/dist/star-rating.min.js"></script>
 <template>
   <div id="app">
     <md-toolbar class="md-primary" id="header">
@@ -22,7 +23,8 @@ import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
 
 Vue.use(VueMaterial);
-Vue.component('paginate', VuejsPaginate)
+Vue.component('paginate', VuejsPaginate);
+Vue.component('star-rating', VueStarRating.default);
 
 export default {
   name: "App",
