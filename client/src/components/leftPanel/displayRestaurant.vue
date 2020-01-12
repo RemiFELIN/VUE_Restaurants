@@ -9,9 +9,12 @@
     <md-list class="md-double-line">
       <!-- Photo du restaurant -->
       <md-list-item>
-        <img
-          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iamsterdam.com%2Fmedia%2Flocations-ndtrc%2Frestaurants%2Fbordeau-restaurant-amsterdam.jpg%3Fas%3Dfalse%26h%3D328%26w%3D580%26iar%3Dtrue&f=1&nofb=1"
-        />
+        <md-progress-spinner style="       position: absolute;
+   left: 40%;
+   top: 40%;
+" v-if="!loaded" md-mode="indeterminate"></md-progress-spinner>
+        <img v-if="!restaurant.image " v-bind:style="{ opacity: activeOpacity}" :src="imgRestaurant[i]" v-on:load="loadImage" />
+        <img v-if="restaurant.image " v-bind:style="{ opacity: activeOpacity}" :src="restaurant.image" v-on:load="loadImage" />
       </md-list-item>
 
       <!-- Note du restaurant -->
@@ -171,7 +174,6 @@
     <md-button class="md-raised maps" id="show-modal" @click="showModal">
       <md-icon style="color:white">streetview</md-icon>Afficher la carte
     </md-button>
-
   </div>
 </template>
 
@@ -191,6 +193,14 @@ export default {
       this.msg.delete = false;
       this.msg.update = false;
       this.restaurant = this.msg;
+      this.loaded = false;
+      this.activeOpacity = 0.3;
+      if (!this.restaurant.image) {
+        if (this.i < this.imgRestaurant.length - 1) this.i++;
+        else this.i = 0;
+        this.restaurant.image = this.imgRestaurant[this.i];
+      } 
+      console.log(this.i);
       this.moyenneDesScores();
     }
   },
@@ -217,11 +227,36 @@ export default {
         address: {
           street: null,
           zipcode: null,
-          coord:null
+          coord: null
         },
         grades: [{ date: { $date: null }, grade: null, score: null }],
-        
-      }
+        image: null,
+        activeOpacity:0.3
+      },
+      imgRestaurant: [
+        "http://d16jvv1mxapgw7.cloudfront.net/cover_hemisphere_regaliaResidence.jpg",
+        "https://media-cdn.tripadvisor.com/media/photo-s/02/21/c7/29/the-french-connection.jpg",
+        "https://www.omnihotels.com/-/media/images/hotels/indsev/restaurants/indsev-omni-severin-hotel-1913-restaurant-1.jpg?h=660&la=en&w=1170",
+        "https://www.sensesrestaurant.nl/heading/home_48.jpg",
+        "https://repo.restaurant.michelin.fr/sites/mtppoi/files/mirazur-menton-20190405-4.jpg",
+        "http://www.longisland.com/site_media/images/restaurants/photo_gallery/5565_12_l.jpg",
+        "https://abqsunport.com/wp-content/uploads/2014/08/Shops-Restaurants1.jpg",
+        "https://avitaltours.com/san-francisco/wp-content/uploads/sites/3/2016/04/San-francisco-restaurants-for-a-business-lunch.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Hippopotamus_Montparnasse_Paris_2018_-%C2%AEYann_Deret-8467.jpg/1200px-Hippopotamus_Montparnasse_Paris_2018_-%C2%AEYann_Deret-8467.jpg",
+        "https://libertyhouserestaurant.com/wp-content/uploads/sites/13/2016/11/slide-restaurant.jpg",
+        "https://i.ytimg.com/vi/OOXbPzgv42g/maxresdefault.jpg",
+        "https://www.centarahotelsresorts.com/centara/chy/images/uploads/gallery/thumb/hat-yai-ginger-restaurant-01-640x457.jpg",
+        "https://www.movenpick.com/fileadmin/_processed_/0/4/csm_Geneva_xxxxxxxx_i113630_03_5e64eb4cf2.jpg",
+        "https://www.floornature.com/media/photos/1/13265/11_lina-ghotmeh-architecture_les-grands-verres_ph-takuji-shimmura_full.jpg",
+        "https://secure.i.telegraph.co.uk/multimedia/archive/01113/murano_1113808a.jpg",
+        "https://www.bestoftoronto.net/wp-content/uploads/2017/06/NoceRestaurant-BestofToronto-2017-008.jpg",
+        "http://www.alpinemountainchalets.com/wp-content/uploads/2013/07/Inside-Restaurant.jpg",
+        "https://i.ytimg.com/vi/YR97ghYXfWs/maxresdefault.jpg",
+        "http://apparelmagazine.co.nz/restaurantandcafe/wp-content/uploads/sites/3/2018/04/RC-NEWS-RESTAURANTS-TO-BECOME-HEALTH-HAVENS-0518.jpeg",
+        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iamsterdam.com%2Fmedia%2Flocations-ndtrc%2Frestaurants%2Fbordeau-restaurant-amsterdam.jpg%3Fas%3Dfalse%26h%3D328%26w%3D580%26iar%3Dtrue&f=1&nofb=1"
+      ],
+      i: 0,
+      loaded:false
     };
   },
   methods: {
@@ -252,6 +287,10 @@ export default {
     },
     showModal: function() {
       this.$modal.show("remiNeSaitPasAffichierUneModale");
+    },
+    loadImage: function() {
+      this.loaded = true;
+      this.activeOpacity = 1;
     }
   }
 };
@@ -265,4 +304,8 @@ export default {
   background-color: #26bd07 !important;
   color: white;
 }
+.opacityLow{
+  opacity: 1;
+}
+
 </style>
