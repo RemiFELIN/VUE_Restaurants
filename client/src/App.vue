@@ -1,5 +1,6 @@
 <script src="https://unpkg.com/vuejs-paginate@latest"></script>
 <script src="https://unpkg.com/vue-star-rating/dist/star-rating.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
 <template>
   <div id="app">
     <md-toolbar class="md-primary" id="header">

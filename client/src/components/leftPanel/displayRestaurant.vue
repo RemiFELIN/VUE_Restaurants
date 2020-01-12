@@ -286,7 +286,7 @@ export default {
       this.$emit("restaurantUpdated", this.restaurant);
     },
     showModal: function() {
-      this.$modal.show("remiNeSaitPasAffichierUneModale");
+      this.$modal.show("modal");
     },
     loadImage: function() {
       this.loaded = true;
