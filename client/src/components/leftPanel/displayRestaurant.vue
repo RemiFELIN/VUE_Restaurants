@@ -159,19 +159,20 @@
     </md-button>
 
     <!-- AFFICHER LA CARTE -->
-    <md-button class="md-raised maps" v-on:click="launch()">
+    <md-button class="md-raised maps" id="show-modal" v-on:click="afficheModal()">
       <md-icon style="color:white">streetview</md-icon>Afficher la carte
-      <viewRestaurant @close="quit()"></viewRestaurant>
-    </md-button>
+      <view-restaurant v-on:close="close()"></view-restaurant>
+    </md-button> 
+
   </div>
 </template>
 
 <script>
-import viewRestaurant from "./viewRestaurant.vue";
+import viewRestaurant from "./viewRestaurant.vue"
 
 export default {
   name: "displayRestaurant",
-  components: {
+  components:  {
     viewRestaurant
   },
   props: {
@@ -202,7 +203,7 @@ export default {
       inputCuisine: "",
       displayInputBorough: false,
       inputBorough: "",
-      showModal: false,
+      showModal: "",
       noteMoy: 0,
       apiBaseURL: "http://localhost:9000/api/restaurants",
       restaurant: {
@@ -242,14 +243,13 @@ export default {
     deleteRestaurant: function() {
       this.restaurant.delete = true;
       this.$emit("restaurantUpdated", this.restaurant);
-      this.retour();
     },
-    launch() {
-      this.$emit("showModal", (this.showModal = true));
-      console.log("afficher la carte : OK\nshowModal = " + this.showModal);
+    afficheModal() {
+      this.$emit("event");
+      console.log("displayRestaurant : methode -> OK")
     },
-    quit() {
-      this.$emit("showModal", (this.showModal = false));
+    close() {
+      this.$emit("close");
     }
   }
 };

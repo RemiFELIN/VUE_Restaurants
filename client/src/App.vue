@@ -7,10 +7,9 @@
         <md-icon>room_service</md-icon>&nbsp;Gestionnaire de menus pour restaurants
       </h3>
     </md-toolbar>
-    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage" />
+    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage" v-on:event="afficheModal()" v-on:close="close()"/>
     <RightPanel :msg="childData" @restaurantData="updateCurrentRestaurant" />
-    <viewRestaurant></viewRestaurant>
-
+    <viewRestaurant v-if="showModal"></viewRestaurant>
   </div>
 </template>
 <script>
@@ -37,7 +36,7 @@ export default {
     return {
       childData: "",
       currentRestaurant: "",
-      showModal: false
+      showModal: ""
     };
   },
   methods: {
@@ -46,6 +45,13 @@ export default {
     },
     updateCurrentRestaurant(variable) {
       this.currentRestaurant = variable;
+    },
+    afficheModal() {
+      console.log("coucou")
+      this.showModal = true
+    },
+    close() {
+      this.showModal = false;
     }
   }
 };

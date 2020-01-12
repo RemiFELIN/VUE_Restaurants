@@ -1,4 +1,3 @@
-
 <template >
   <div id="leftPanel" >
     <addCuisine @inputData="updateMessage" :displayAddCuisine="display"></addCuisine>
@@ -6,6 +5,8 @@
       @display="updateDisplay"
       @restaurantUpdated="updateMessage"
       :msg="currentRestaurant"
+      v-on:event="afficheModal()"
+      v-on:close="close()"
     ></displayRestaurant>
   </div>
 </template>
@@ -57,6 +58,13 @@ export default {
       var leftPanel = document.getElementById("leftPanel");
       var newHeight = window.innerHeight - headerHeight;
       leftPanel.style.height = newHeight + "px";
+    },
+    afficheModal() {
+      this.$emit("event")
+      console.log("leftPanel : methode -> OK")
+    },
+    close() {
+      this.$emit("close")
     }
     //   pageSuivante() {
     //     console.log("page suivante");
