@@ -7,14 +7,23 @@
     </md-button>
 
     <md-list class="md-double-line">
-      <!-- Note du restaurant -->
+      <!-- Photo du restaurant -->
       <md-list-item>
-        <star-rating v-if="restaurant.grades" v-model="noteMoy" style="margin:auto"></star-rating>
-        <star-rating v-if="!restaurant.grades" style="margin:auto"></star-rating>
+        <img
+          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iamsterdam.com%2Fmedia%2Flocations-ndtrc%2Frestaurants%2Fbordeau-restaurant-amsterdam.jpg%3Fas%3Dfalse%26h%3D328%26w%3D580%26iar%3Dtrue&f=1&nofb=1"
+        />
       </md-list-item>
 
-      <md-list-item  v-if="!restaurant.grades">
-        <p style="margin:auto">Soyez le premier à noté ce restaurant</p>
+      <!-- Note du restaurant -->
+      <md-list-item>
+        <star-rating
+          v-if="restaurant.grades"
+          :read-only="true"
+          v-model="noteMoy"
+          style="margin:auto"
+          :round-start-rating="false"
+        ></star-rating>
+        <star-rating v-if="!restaurant.grades" :read-only="true" style="margin:auto"></star-rating>
       </md-list-item>
 
       <!--Nom du restaurant-->
@@ -159,22 +168,18 @@
     </md-button>
 
     <!-- AFFICHER LA CARTE -->
-    <md-button class="md-raised maps" id="show-modal" v-on:click="afficheModal()">
+    <md-button class="md-raised maps" id="show-modal" @click="showModal">
       <md-icon style="color:white">streetview</md-icon>Afficher la carte
-      <view-restaurant v-on:close="close()"></view-restaurant>
-    </md-button> 
+    </md-button>
 
   </div>
 </template>
 
-<script>
-import viewRestaurant from "./viewRestaurant.vue"
 
+
+<script>
 export default {
   name: "displayRestaurant",
-  components:  {
-    viewRestaurant
-  },
   props: {
     msg: {
       type: null
@@ -187,7 +192,6 @@ export default {
       this.msg.update = false;
       this.restaurant = this.msg;
       this.moyenneDesScores();
-      console.log(this.restaurant);
     }
   },
   data() {
@@ -203,7 +207,6 @@ export default {
       inputCuisine: "",
       displayInputBorough: false,
       inputBorough: "",
-      showModal: "",
       noteMoy: 0,
       apiBaseURL: "http://localhost:9000/api/restaurants",
       restaurant: {
@@ -213,9 +216,11 @@ export default {
         borough: null,
         address: {
           street: null,
-          zipcode: null
+          zipcode: null,
+          coord:null
         },
-        grades: [{ date: { $date: null }, grade: null, score: null }]
+        grades: [{ date: { $date: null }, grade: null, score: null }],
+        
       }
     };
   },
@@ -227,9 +232,10 @@ export default {
         this.restaurant.grades.forEach(item => {
           this.noteMoy += item.score;
         });
-        this.noteMoy = Math.floor(
-          this.noteMoy / (this.restaurant.grades.length * 4)
+        this.noteMoy = parseFloat(
+          (this.noteMoy / (this.restaurant.grades.length * 4)).toFixed(2)
         );
+        if (this.noteMoy > 5) this.noteMoy = 5;
       }
     },
     retour: function() {
@@ -244,12 +250,8 @@ export default {
       this.restaurant.delete = true;
       this.$emit("restaurantUpdated", this.restaurant);
     },
-    afficheModal() {
-      this.$emit("event");
-      console.log("displayRestaurant : methode -> OK")
-    },
-    close() {
-      this.$emit("close");
+    showModal: function() {
+      this.$modal.show("remiNeSaitPasAffichierUneModale");
     }
   }
 };

@@ -7,21 +7,23 @@
         <md-icon>room_service</md-icon>&nbsp;Gestionnaire de menus pour restaurants
       </h3>
     </md-toolbar>
-    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage" v-on:event="afficheModal()" v-on:close="close()"/>
+    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage"/>
     <RightPanel :msg="childData" @restaurantData="updateCurrentRestaurant" />
-    <viewRestaurant v-if="showModal"></viewRestaurant>
+    <modalMaps :msg="currentRestaurant"></modalMaps>
   </div>
+
 </template>
+
+
+
 <script>
 import LeftPanel from "./components/LeftPanel.vue";
 import RightPanel from "./components/RightPanel.vue";
-import viewRestaurant from "./components/leftPanel/viewRestaurant.vue";
+import modalMaps from './components/modalMaps';
 import Vue from "vue";
-import VueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
 
-Vue.use(VueMaterial);
 Vue.component('paginate', VuejsPaginate);
 Vue.component('star-rating', VueStarRating.default);
 
@@ -30,13 +32,12 @@ export default {
   components: {
     LeftPanel,
     RightPanel,
-    viewRestaurant
+    modalMaps
   },
   data: function() {
     return {
       childData: "",
       currentRestaurant: "",
-      showModal: ""
     };
   },
   methods: {
@@ -46,13 +47,6 @@ export default {
     updateCurrentRestaurant(variable) {
       this.currentRestaurant = variable;
     },
-    afficheModal() {
-      console.log("coucou")
-      this.showModal = true
-    },
-    close() {
-      this.showModal = false;
-    }
   }
 };
 </script>
