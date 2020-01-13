@@ -2,6 +2,7 @@
   <div id="leftPanel">
     <addCuisine @inputData="updateMessage" :displayAddCuisine="display"></addCuisine>
     <displayRestaurant
+      @mapsRestaurant="updateMapsRestaurant"
       @display="updateDisplay"
       @restaurantUpdated="updateMessage"
       :msg="currentRestaurant"
@@ -56,6 +57,9 @@ export default {
       var leftPanel = document.getElementById("leftPanel");
       var newHeight = window.innerHeight - headerHeight;
       leftPanel.style.height = newHeight + "px";
+    },
+    updateMapsRestaurant(variable) {
+      this.$emit("mapsRestaurant",variable);
     }
   }
 };

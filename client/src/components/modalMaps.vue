@@ -1,14 +1,14 @@
 <template>
   <div id="modalMaps">
-    <modal name="modal" v-if="currentRestaurant">
-      <div id="basicMap" v-if="currentRestaurant.address.coord" v-on:load="initMap(currentRestaurant.address.coord[1], currentRestaurant.address.coord[0])"></div>
-      <div v-if="!currentRestaurant.address.coord">Ce restaurant n'a pas de Longitude/latitude</div>
+    <modal name="modal" v-if="msg">
+      <div id="basicMap" v-if="msg.address.coord"></div>
+      <div v-if="!msg.address.coord">Ce restaurant n'a pas de Longitude/latitude</div>
     </modal>
   </div>
 </template>
 
 <script>
-import L from 'leaflet';
+import L from "leaflet";
 export default {
   name: "modalMaps",
   props: {
@@ -17,6 +17,9 @@ export default {
   watch: {
     msg: function() {
       this.currentRestaurant = this.msg;
+      this.waitForElement("basicMap", () => {
+        this.initMap(this.msg.address.coord[1], this.msg.address.coord[0]);
+      });
     }
   },
   data() {
@@ -24,25 +27,37 @@ export default {
       currentRestaurant: null,
       map: null,
       tileLayer: null,
-      layers: [],
+      layers: []
     };
   },
   methods: {
+    waitForElement(elementId, callBack) {
+      window.setTimeout(() => {
+        var element = document.getElementById(elementId);
+        if (element) {
+          callBack(elementId, element);
+        } else {
+          this.waitForElement(elementId, callBack);
+        }
+      }, 500);
+    },
     initMap(latitude, longitude) {
-        this.map = L.map('basicMap').setView([latitude, longitude], 1);
-        this.tileLayer = L.tileLayer(
-                  'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
-                  {
-                    maxZoom: 55,
-                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
-                  }
-        );
-        this.tileLayer.addTo(this.map);
-        console.log(latitude + " / " + longitude)
+      console.log("initMap");
+      this.map = L.map("basicMap").setView([latitude, longitude], 1);
+      this.tileLayer = L.tileLayer(
+        "https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png",
+        {
+          maxZoom: 55,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
+        }
+      );
+      this.tileLayer.addTo(this.map);
+      console.log(latitude + " / " + longitude);
     },
     initLayers() {},
     mounted() {
-      this.initLayers();
+      this.initMap();
     }
   }
 };

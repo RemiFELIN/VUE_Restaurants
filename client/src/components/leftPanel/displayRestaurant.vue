@@ -9,12 +9,26 @@
     <md-list class="md-double-line">
       <!-- Photo du restaurant -->
       <md-list-item>
-        <md-progress-spinner style="       position: absolute;
+        <md-progress-spinner
+          style="       position: absolute;
    left: 40%;
    top: 40%;
-" v-if="!loaded" md-mode="indeterminate"></md-progress-spinner>
-        <img v-if="!restaurant.image " v-bind:style="{ opacity: activeOpacity}" :src="imgRestaurant[i]" v-on:load="loadImage" />
-        <img v-if="restaurant.image " v-bind:style="{ opacity: activeOpacity}" :src="restaurant.image" v-on:load="loadImage" />
+"
+          v-if="!loaded"
+          md-mode="indeterminate"
+        ></md-progress-spinner>
+        <img
+          v-if="!restaurant.image "
+          v-bind:style="{ opacity: activeOpacity}"
+          :src="imgRestaurant[i]"
+          v-on:load="loadImage"
+        />
+        <img
+          v-if="restaurant.image "
+          v-bind:style="{ opacity: activeOpacity}"
+          :src="restaurant.image"
+          v-on:load="loadImage"
+        />
       </md-list-item>
 
       <!-- Note du restaurant -->
@@ -172,8 +186,13 @@
 
     <!-- AFFICHER LA CARTE -->
     <md-button class="md-raised maps" id="show-modal" @click="showModal">
-      <md-icon style="color:white">streetview</md-icon>Afficher la carte
+      <md-icon style="color:white">streetview</md-icon>Afficher la localisation
     </md-button>
+
+    <!-- AFFICHER LE MENU -->
+    <!-- <md-button class="md-raised maps" id="show-modal" @click="showModal">
+      <md-icon style="color:white">streetview</md-icon>Afficher le menu
+    </md-button> -->
   </div>
 </template>
 
@@ -199,7 +218,7 @@ export default {
         if (this.i < this.imgRestaurant.length - 1) this.i++;
         else this.i = 0;
         this.restaurant.image = this.imgRestaurant[this.i];
-      } 
+      }
       console.log(this.i);
       this.moyenneDesScores();
     }
@@ -231,7 +250,7 @@ export default {
         },
         grades: [{ date: { $date: null }, grade: null, score: null }],
         image: null,
-        activeOpacity:0.3
+        activeOpacity: 0.3
       },
       imgRestaurant: [
         "http://d16jvv1mxapgw7.cloudfront.net/cover_hemisphere_regaliaResidence.jpg",
@@ -256,7 +275,7 @@ export default {
         "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iamsterdam.com%2Fmedia%2Flocations-ndtrc%2Frestaurants%2Fbordeau-restaurant-amsterdam.jpg%3Fas%3Dfalse%26h%3D328%26w%3D580%26iar%3Dtrue&f=1&nofb=1"
       ],
       i: 0,
-      loaded:false
+      loaded: false
     };
   },
   methods: {
@@ -286,6 +305,7 @@ export default {
       this.$emit("restaurantUpdated", this.restaurant);
     },
     showModal: function() {
+      this.$emit("mapsRestaurant",this.restaurant);
       this.$modal.show("modal");
     },
     loadImage: function() {
@@ -304,8 +324,7 @@ export default {
   background-color: #26bd07 !important;
   color: white;
 }
-.opacityLow{
+.opacityLow {
   opacity: 1;
 }
-
 </style>

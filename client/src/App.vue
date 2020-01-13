@@ -8,11 +8,10 @@
         <md-icon>room_service</md-icon>&nbsp;Gestionnaire de menus pour restaurants
       </h3>
     </md-toolbar>
-    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage"/>
+    <LeftPanel :msg="currentRestaurant" @inputData="updateMessage" @mapsRestaurant="updateMapsRestaurant"/>
     <RightPanel :msg="childData" @restaurantData="updateCurrentRestaurant" />
-    <modalMaps :msg="currentRestaurant"></modalMaps>
+    <modalMaps :msg="mapsRestaurant"></modalMaps>
   </div>
-
 </template>
 
 
@@ -20,13 +19,13 @@
 <script>
 import LeftPanel from "./components/LeftPanel.vue";
 import RightPanel from "./components/RightPanel.vue";
-import modalMaps from './components/modalMaps';
+import modalMaps from "./components/modalMaps";
 import Vue from "vue";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
 
-Vue.component('paginate', VuejsPaginate);
-Vue.component('star-rating', VueStarRating.default);
+Vue.component("paginate", VuejsPaginate);
+Vue.component("star-rating", VueStarRating.default);
 
 export default {
   name: "App",
@@ -39,6 +38,7 @@ export default {
     return {
       childData: "",
       currentRestaurant: "",
+      mapsRestaurant:null
     };
   },
   methods: {
@@ -48,6 +48,9 @@ export default {
     updateCurrentRestaurant(variable) {
       this.currentRestaurant = variable;
     },
+    updateMapsRestaurant(variable) {
+      this.mapsRestaurant = variable;
+    }
   }
 };
 </script>
