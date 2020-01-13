@@ -192,7 +192,7 @@
     <!-- AFFICHER LE MENU -->
     <!-- <md-button class="md-raised maps" id="show-modal" @click="showModal">
       <md-icon style="color:white">streetview</md-icon>Afficher le menu
-    </md-button> -->
+    </md-button>-->
   </div>
 </template>
 
@@ -305,8 +305,9 @@ export default {
       this.$emit("restaurantUpdated", this.restaurant);
     },
     showModal: function() {
-      this.$emit("mapsRestaurant",this.restaurant);
       this.$modal.show("modal");
+      this.$modal.show("modal");
+      this.$emit("mapsRestaurant", this.restaurant);
     },
     loadImage: function() {
       this.loaded = true;
