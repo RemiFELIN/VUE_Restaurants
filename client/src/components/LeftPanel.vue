@@ -1,6 +1,6 @@
 <template >
   <div id="leftPanel">
-    <addCuisine @inputData="updateMessage" :displayAddCuisine="display"></addCuisine>
+    <addCuisine @inputData="updateMessage"  :displayAddCuisine="display"></addCuisine>
     <displayRestaurant
       @mapsRestaurant="updateMapsRestaurant"
       @display="updateDisplay"
@@ -51,6 +51,9 @@ export default {
     },
     updateRestaurant(variable) {
       this.$emit("restaurantUpdated", variable);
+    },
+    updateDisplayMaps(variable){
+      this.$emit("displayMaps",variable)
     },
     resizeWindow() {
       var headerHeight = document.getElementById("app").offsetHeight;

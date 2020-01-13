@@ -12,9 +12,17 @@ import L from "leaflet";
 export default {
   name: "modalMaps",
   props: {
-    msg: {}
+    msg: {},
+    display: {}
   },
   watch: {
+    display: function(){
+      console.log("message rafiné")
+      if(this.currentRestaurant.address.coord)
+        setTimeout(() =>{
+          this.initMap(this.currentRestaurant.address.coord[1], this.currentRestaurant.address.coord[0])
+        },500)
+    },
     msg: function() {
       this.currentRestaurant = this.msg;
       this.waitForElement("basicMap", () => {
@@ -42,23 +50,20 @@ export default {
       }, 500);
     },
     initMap(latitude, longitude) {
-      console.log("initMap");
-      this.map = L.map("basicMap").setView([latitude, longitude], 1);
+      console.log("couille")
+
+      this.map = L.map("basicMap").setView([latitude, longitude], 13);
       this.tileLayer = L.tileLayer(
-        "https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png",
+        'https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
         {
-          maxZoom: 55,
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
+          maxZoom: 30,
+          attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
         }
       );
       this.tileLayer.addTo(this.map);
-      console.log(latitude + " / " + longitude);
+      console.log("tileLayer:",this.tileLayer,"map:",this.map)
+      console.log(latitude + " / " + longitude)
     },
-    initLayers() {},
-    mounted() {
-      this.initMap();
-    }
   }
 };
 </script>
@@ -66,7 +71,7 @@ export default {
 <style>
 #basicMap {
   width: 100%;
-  height: 100%;
+  height: 20px;
   margin: 0;
 }
 </style>
