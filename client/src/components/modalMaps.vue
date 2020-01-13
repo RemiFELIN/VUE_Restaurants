@@ -3,10 +3,10 @@
     <modal name="modal">
       <span v-if="msg">
         <md-progress-spinner
-          style="       position: absolute;
-   left: 44%;
-   top: 40%;
-"
+          style=" position: absolute;
+                  left: 44%;
+                  top: 40%;
+                "
           v-if="!loaded"
           md-mode="indeterminate"
         ></md-progress-spinner>
@@ -67,8 +67,8 @@ export default {
 
 <style>
 #basicMap {
-  width: 100%;
-  height: 20px;
+  padding-left: 30%;
+  height: 350px;
   margin: 0;
 }
 .center {
