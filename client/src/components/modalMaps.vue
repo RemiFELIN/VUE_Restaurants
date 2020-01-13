@@ -1,10 +1,23 @@
 <template>
   <div id="modalMaps">
-    <modal name="modal" v-if="msg">
-      <div id="basicMap" v-if="msg.address.coord"></div>
-      <div class="center" v-if="!msg.address.coord">
-        <p>Ce restaurant n'a pas fourni des informations sur son emplacement.</p>
-      </div>
+    <modal name="modal">
+      <span v-if="msg">
+        <md-progress-spinner
+          style="       position: absolute;
+   left: 44%;
+   top: 40%;
+"
+          v-if="!loaded"
+          md-mode="indeterminate"
+        ></md-progress-spinner>
+        <div id="basicMap" v-if="msg.address.coord"></div>
+
+        <span v-if="loaded">
+          <div class="center" v-if="!msg.address.coord">
+            <p>Ce restaurant n'a pas fourni des informations sur son emplacement.</p>
+          </div>
+        </span>
+      </span>
     </modal>
   </div>
 </template>
@@ -19,36 +32,24 @@ export default {
   },
   watch: {
     msg: function() {
-      console.log("modals Maps")
-      this.currentRestaurant = this.msg;
-      this.waitForElement("basicMap", () => {
-        this.initMap(this.msg.address.coord[1], this.msg.address.coord[0]);
-      });
+      this.loaded = false;
+      setTimeout(() => {
+        this.loaded = true;
+        if (this.msg.address.coord)
+          this.initMap(this.msg.address.coord[1], this.msg.address.coord[0]);
+      }, 3000);
     }
   },
   data() {
     return {
-      currentRestaurant: null,
+      loaded: false,
       map: null,
       tileLayer: null,
       layers: []
     };
   },
   methods: {
-    waitForElement(elementId, callBack) {
-      window.setTimeout(() => {
-        var element = document.getElementById(elementId);
-        console.log(element)
-        if (element) {
-          callBack(elementId, element);
-        } else {
-          this.waitForElement(elementId, callBack);
-        }
-      }, 500);
-    },
     initMap(latitude, longitude) {
-      console.log("couille");
-
       this.map = L.map("basicMap").setView([latitude, longitude], 13);
       this.tileLayer = L.tileLayer(
         "https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png",
@@ -59,8 +60,6 @@ export default {
         }
       );
       this.tileLayer.addTo(this.map);
-      console.log("tileLayer:", this.tileLayer, "map:", this.map);
-      console.log(latitude + " / " + longitude);
     }
   }
 };

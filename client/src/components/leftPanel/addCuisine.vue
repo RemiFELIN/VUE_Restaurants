@@ -105,28 +105,6 @@ export default {
       )
         this.submit();
     }
-    //   async supprimerRestaurant(id) {
-    //     try {
-    //       let reponseJSON = await fetch(this.apiBaseURL + "/" + id, {
-    //         method: "DELETE"
-    //       });
-    //       let reponseJS = await reponseJSON.json();
-    //       console.log("Restaurant supprime : " + reponseJS.msg);
-    //       this.getDataFromServer(); // on rafraichit l'affichage
-    //     } catch (err) {
-    //       console.log("Erreur dans le fetchs DELETE " + err.msg);
-    //     }
-    //   },
-    //   pageSuivante() {
-    //     console.log("page suivante");
-    //     this.page++;
-    //     this.getDataFromServer();
-    //   },
-    //   pagePrecedente() {
-    //     console.log("page precedente");
-    //     this.page--;
-    //     this.getDataFromServer();
-    //   }
   }
 };
 </script>

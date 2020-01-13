@@ -219,7 +219,6 @@ export default {
         else this.i = 0;
         this.restaurant.image = this.imgRestaurant[this.i];
       }
-      console.log(this.i);
       this.moyenneDesScores();
     }
   },
@@ -305,7 +304,6 @@ export default {
       this.$emit("restaurantUpdated", this.restaurant);
     },
     showModal: function() {
-      this.$modal.show("modal");
       this.$modal.show("modal");
       this.$emit("mapsRestaurant", this.restaurant);
     },
